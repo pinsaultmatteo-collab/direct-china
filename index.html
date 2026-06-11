@@ -219,12 +219,13 @@ header.scrolled{
   border-top:1px solid var(--line);border-bottom:1px solid var(--line);
   background:var(--ink-2);overflow:hidden;padding:16px 0;position:relative;z-index:2;
 }
-.ticker-track{display:flex;gap:0;width:max-content;animation:scrollx 36s linear infinite}
+.ticker-track{display:flex;gap:0;width:max-content;animation:scrollx 36s linear infinite;will-change:transform}
 .ticker:hover .ticker-track{animation-play-state:paused}
-@keyframes scrollx{to{transform:translateX(-50%)}}
+@keyframes scrollx{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 .ticker span{
   font-family:var(--font-m);font-size:11.5px;letter-spacing:.2em;text-transform:uppercase;
   color:var(--steel);padding:0 28px;white-space:nowrap;display:flex;align-items:center;gap:28px;
+  flex:0 0 auto;
 }
 .ticker span::after{content:'◆';color:var(--yellow);font-size:8px}
 
@@ -1188,6 +1189,12 @@ footer{background:#070C16;border-top:1px solid var(--line);padding:64px 0 36px}
     entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
   }, {threshold:.15, rootMargin:'0px 0px -40px 0px'});
   document.querySelectorAll('.rv, .cat-card').forEach(el => io.observe(el));
+
+  /* ---- le hero s'affiche immédiatement au chargement (utile sur mobile où la carte est sous la ligne de flottaison) ---- */
+  document.querySelectorAll('.hero .rv').forEach(el => {
+    io.unobserve(el);
+    el.classList.add('in');
+  });
 
   /* ---- duplicate ticker for seamless loop ---- */
   const track = document.getElementById('tickerTrack');
