@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Comment ça marche — Direct China | Le prix usine, expliqué</title>
+<meta name="description" content="Comment Direct China casse les prix : circuit direct usine, zéro intermédiaire, import géré de A à Z. Découvrez notre process en 4 étapes et les garanties qui sécurisent votre achat.">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..125,300..900&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<style>
+/* comparatif circuit */
+.compare{background:var(--paper);color:var(--ink)}
+.compare h2{color:var(--ink)}
+.compare .lead{color:var(--steel-d)}
+.compare-grid{display:grid;grid-template-columns:1fr 1fr;gap:26px;margin-top:50px}
+.chain{background:var(--white);border:1px solid var(--line-light);border-radius:var(--radius);padding:32px 30px;transition:transform .4s var(--ease),box-shadow .4s}
+.chain:hover{transform:translateY(-4px);box-shadow:0 24px 50px -20px rgba(11,18,32,.18)}
+.chain.direct{background:var(--ink);color:var(--white);border-color:var(--ink)}
+.chain-label{font-family:var(--font-m);font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--steel-d);margin-bottom:6px}
+.chain.direct .chain-label{color:var(--yellow)}
+.chain h3{font-size:20px;font-weight:800;margin-bottom:22px}
+.chain svg{width:100%;height:auto;margin:4px 0 16px}
+.chain-foot{display:flex;align-items:baseline;justify-content:space-between;border-top:1px solid var(--line-light);padding-top:16px}
+.chain.direct .chain-foot{border-top-color:var(--line)}
+.chain-foot small{font-size:13px;color:var(--steel-d)}.chain.direct .chain-foot small{color:var(--steel)}
+.chain-foot b{font-size:30px;font-weight:900;font-variation-settings:'wdth' 112}
+.chain.classic .chain-foot b{color:#C0392B}
+.chain.direct .chain-foot b{color:var(--yellow)}
+@media(max-width:780px){.compare-grid{grid-template-columns:1fr}}
+
+/* leviers prix */
+.levers{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:50px}
+.lever{padding:30px 28px}
+.lever .n{font-family:var(--font-m);font-size:12px;color:var(--yellow);letter-spacing:.16em;margin-bottom:16px}
+.lever h3{font-size:19px;margin-bottom:10px;font-variation-settings:'wdth' 106}
+.lever p{font-size:14px;color:var(--steel)}
+@media(max-width:860px){.levers{grid-template-columns:1fr}}
+
+/* steps */
+.steps{display:flex;flex-direction:column;gap:24px;margin-top:50px;max-width:880px}
+.step{border:1px solid var(--line);border-radius:var(--radius);background:rgba(255,255,255,.025);padding:28px 30px;display:grid;grid-template-columns:auto 1fr auto;gap:24px;align-items:center;transition:border-color .4s,background .4s,transform .4s var(--ease)}
+.step:hover{border-color:rgba(245,179,1,.35);background:rgba(255,255,255,.045);transform:translateX(6px)}
+.step-badge{font-family:var(--font-m);font-size:11px;letter-spacing:.14em;color:var(--yellow);border:1px solid rgba(245,179,1,.35);border-radius:8px;padding:9px 13px;white-space:nowrap;background:rgba(245,179,1,.06)}
+.step h3{font-size:18px;margin-bottom:6px;font-variation-settings:'wdth' 106}
+.step p{font-size:14.5px;color:var(--steel)}
+.step-dur{font-family:var(--font-m);font-size:11px;color:var(--steel-d);letter-spacing:.12em;text-align:right;white-space:nowrap}
+.step-dur b{display:block;font-family:var(--font-d);font-size:16px;color:var(--white);font-weight:700;letter-spacing:0}
+@media(max-width:680px){.step{grid-template-columns:1fr;gap:12px;padding:24px}.step-dur{text-align:left}}
+
+/* trust */
+.trust-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:22px;margin-top:50px}
+.trust-item svg{width:30px;height:30px;color:var(--yellow);margin-bottom:16px}
+.trust-item b{display:block;font-size:16px;font-weight:800;margin-bottom:8px;font-variation-settings:'wdth' 106}
+.trust-item p{font-size:13.5px;color:var(--steel)}
+@media(max-width:980px){.trust-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:540px){.trust-grid{grid-template-columns:1fr}}
+.cta-band{background:var(--ink-2);border-top:1px solid var(--line);text-align:center}
+.cta-band h2 em{font-style:normal;color:var(--yellow)}
+.cta-band p{color:var(--steel);margin:18px auto 32px;max-width:540px}
+</style>
+</head>
+<body>
+
+<header id="header">
+  <div class="wrap nav">
+    <a href="index.html" class="logo"><svg class="logo-mark" viewBox="0 0 40 40" fill="none"><rect x="3" y="12" width="34" height="20" rx="2.5" stroke="#F5B301" stroke-width="2.4"/><line x1="10" y1="12" x2="10" y2="32" stroke="#F5B301" stroke-width="2"/><line x1="17" y1="12" x2="17" y2="32" stroke="#F5B301" stroke-width="2"/><line x1="24" y1="12" x2="24" y2="32" stroke="#F5B301" stroke-width="2"/><line x1="31" y1="12" x2="31" y2="32" stroke="#F5B301" stroke-width="2"/><path d="M6 8 L20 2 L34 8" stroke="#FAFBFD" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>DIRECT<em>CHINA</em></span></a>
+    <nav class="nav-links"><a href="catalogue.html">Catalogue</a><a href="comment-ca-marche.html" class="active">Comment ça marche</a><a href="qui-sommes-nous.html">Qui sommes-nous</a><a href="blog.html">Blog &amp; conseils</a><a href="faq.html">FAQ</a></nav>
+    <a href="mailto:contact@direct-china.fr" class="nav-cta">Demander un devis</a>
+    <button class="burger" id="burger" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
+  </div>
+</header>
+<div class="mobile-menu" id="mobileMenu"><a href="catalogue.html">Catalogue</a><a href="comment-ca-marche.html">Comment ça marche</a><a href="qui-sommes-nous.html">Qui sommes-nous</a><a href="blog.html">Blog &amp; conseils</a><a href="faq.html">FAQ</a><a href="mailto:contact@direct-china.fr"><em>Demander un devis</em></a></div>
+
+<section class="page-hero">
+  <div class="page-hero-grid" aria-hidden="true"></div>
+  <div class="wrap">
+    <div class="crumbs"><a href="index.html">Accueil</a><span>/</span><span>Comment ça marche</span></div>
+    <span class="eyebrow rv">Le modèle Direct China</span>
+    <h1 class="rv rv-d1">Pourquoi nos prix<br>sont aussi bas.</h1>
+    <p class="lead rv rv-d2">Aucune magie : juste un circuit plus court et un import maîtrisé de bout en bout. On vous explique exactement d'où vient l'économie — et comment on sécurise votre achat malgré la distance.</p>
+  </div>
+</section>
+
+<!-- COMPARATIF -->
+<section class="compare section">
+  <div class="wrap">
+    <span class="eyebrow dark rv">Le circuit, schématisé</span>
+    <h2 class="rv rv-d1">3 à 5 marges en moins.</h2>
+    <p class="lead rv rv-d2">En France, un équipement industriel passe par une succession d'intermédiaires qui prennent chacun leur marge. Direct China va le chercher à la source et partage l'économie avec vous.</p>
+    <div class="compare-grid">
+      <div class="chain classic rv">
+        <div class="chain-label">Circuit classique</div>
+        <h3>Chaque maillon prend sa marge</h3>
+        <svg viewBox="0 0 480 130" fill="none" aria-label="Circuit classique">
+          <path d="M30 65 H450" stroke="#C8CFD9" stroke-width="2" stroke-dasharray="5 6"/>
+          <g font-family="'IBM Plex Mono',monospace" font-size="10" text-anchor="middle">
+            <circle cx="30" cy="65" r="9" fill="#0B1220"/><text x="30" y="100" fill="#5B6B82">USINE</text>
+            <circle cx="135" cy="65" r="9" fill="#C0392B" opacity=".85"/><text x="135" y="100" fill="#C0392B">TRADER</text><text x="135" y="38" fill="#C0392B" font-weight="600">+15%</text>
+            <circle cx="240" cy="65" r="9" fill="#C0392B" opacity=".85"/><text x="240" y="100" fill="#C0392B">IMPORT.</text><text x="240" y="38" fill="#C0392B" font-weight="600">+20%</text>
+            <circle cx="345" cy="65" r="9" fill="#C0392B" opacity=".85"/><text x="345" y="100" fill="#C0392B">DISTRIB.</text><text x="345" y="38" fill="#C0392B" font-weight="600">+25%</text>
+            <circle cx="450" cy="65" r="9" fill="#0B1220"/><text x="450" y="100" fill="#5B6B82">VOUS</text>
+          </g>
+        </svg>
+        <div class="chain-foot"><small>Prix final cumulé</small><b>+60 à +90%</b></div>
+      </div>
+      <div class="chain direct rv rv-d1">
+        <div class="chain-label">Circuit Direct China</div>
+        <h3>L'usine. Vous. C'est tout.</h3>
+        <svg viewBox="0 0 480 130" fill="none" aria-label="Circuit Direct China">
+          <path d="M30 65 C 170 25, 310 25, 450 65" stroke="#F5B301" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+          <g font-family="'IBM Plex Mono',monospace" font-size="10" text-anchor="middle">
+            <circle cx="30" cy="65" r="9" fill="#F5B301"/><text x="30" y="100" fill="#8C99AD">USINE</text>
+            <text x="240" y="28" fill="#F5B301" font-weight="600" letter-spacing="1">DIRECT CHINA GÈRE TOUT</text>
+            <text x="240" y="100" fill="#5B6B82">QC · FRET · DOUANE · LIVRAISON</text>
+            <circle cx="450" cy="65" r="9" fill="#3D7DC2"/><text x="450" y="100" fill="#8C99AD">VOUS</text>
+          </g>
+        </svg>
+        <div class="chain-foot"><small>Économie constatée</small><b>jusqu'à −40%</b></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LEVIERS -->
+<section class="section">
+  <div class="wrap">
+    <span class="eyebrow rv">D'où vient l'économie</span>
+    <h2 class="rv rv-d1">Trois leviers, un seul prix.</h2>
+    <div class="levers">
+      <div class="tile lever rv"><div class="n">LEVIER 01</div><h3>Prix fabricant négocié</h3><p>On achète directement à l'usine, en volume container, sans trader. La marge des intermédiaires disparaît purement et simplement de votre facture.</p></div>
+      <div class="tile lever rv rv-d1"><div class="n">LEVIER 02</div><h3>Production à la commande</h3><p>Pas de stock dormant en France à financer et à marger. Votre matériel est fabriqué pour vous : c'est ce qui justifie le délai, et ce qui tire le prix vers le bas.</p></div>
+      <div class="tile lever rv rv-d2"><div class="n">LEVIER 03</div><h3>Logistique mutualisée</h3><p>On optimise le remplissage des containers et on maîtrise le fret et la douane. Des coûts d'import qu'un acheteur isolé paierait bien plus cher.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section class="section" style="background:var(--ink-2);border-top:1px solid var(--line)">
+  <div class="wrap">
+    <span class="eyebrow rv">Le déroulé, étape par étape</span>
+    <h2 class="rv rv-d1">De la commande<br>à votre site.</h2>
+    <div class="steps">
+      <div class="step rv"><span class="step-badge">ÉTAPE 01</span><div><h3>Devis &amp; commande — 50 % d'acompte</h3><p>Devis détaillé, spécifications validées ensemble, contrat de droit français signé. Vous versez 50 % pour lancer la production.</p></div><div class="step-dur">DURÉE<b>J + 0</b></div></div>
+      <div class="step rv rv-d1"><span class="step-badge">ÉTAPE 02</span><div><h3>Production &amp; contrôle qualité</h3><p>L'usine fabrique votre matériel. Avant expédition : inspection complète, photos, vidéos et rapport QC envoyés pour votre validation.</p></div><div class="step-dur">DURÉE<b>6–8 sem.</b></div></div>
+      <div class="step rv rv-d2"><span class="step-badge">ÉTAPE 03</span><div><h3>Fret maritime &amp; dédouanement</h3><p>Chargement container, transport maritime, formalités douanières et taxes : tout est inclus et géré par nos soins. Vous suivez votre container en ligne.</p></div><div class="step-dur">DURÉE<b>4–6 sem.</b></div></div>
+      <div class="step rv rv-d3"><span class="step-badge">ÉTAPE 04</span><div><h3>Solde de 50 % &amp; livraison</h3><p>Vous réglez le solde avant la livraison sur votre site, partout en France. Le matériel arrive dédouané, conforme au rapport QC validé.</p></div><div class="step-dur">DURÉE<b>~3 mois total</b></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- TRUST -->
+<section class="section">
+  <div class="wrap">
+    <span class="eyebrow rv">Ce qui sécurise votre achat</span>
+    <h2 class="rv rv-d1">Acheter loin,<br>en toute confiance.</h2>
+    <div class="trust-grid">
+      <div class="tile trust-item rv"><svg viewBox="0 0 30 30" fill="none"><path d="M15 3L4 8v7c0 6 4.5 10.5 11 12 6.5-1.5 11-6 11-12V8L15 3z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg><b>Société française</b><p>Vous contractez avec une entreprise française, en droit français, avec facturation française.</p></div>
+      <div class="tile trust-item rv rv-d1"><svg viewBox="0 0 30 30" fill="none"><circle cx="13" cy="13" r="8" stroke="currentColor" stroke-width="1.7"/><path d="M25 25l-6-6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><path d="M9.5 13l2.5 2.5 5-5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg><b>Contrôle qualité usine</b><p>Inspection avant expédition avec photos et vidéos. Rien ne part sans votre validation.</p></div>
+      <div class="tile trust-item rv rv-d2"><svg viewBox="0 0 30 30" fill="none"><rect x="3" y="9" width="24" height="16" rx="2" stroke="currentColor" stroke-width="1.7"/><path d="M3 14h24" stroke="currentColor" stroke-width="1.7"/><path d="M8 20h6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg><b>Paiement 50 / 50</b><p>50 % à la commande, 50 % seulement avant livraison, une fois le QC validé.</p></div>
+      <div class="tile trust-item rv rv-d3"><svg viewBox="0 0 30 30" fill="none"><path d="M3 21h18l4-7h-7" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M3 21V9h11v12" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><circle cx="9" cy="24" r="2.5" stroke="currentColor" stroke-width="1.7"/><circle cx="21" cy="24" r="2.5" stroke="currentColor" stroke-width="1.7"/></svg><b>Livré dédouané (DDP)</b><p>Fret, douane, taxes : tout est inclus dans le prix annoncé. Aucune surprise à l'arrivée.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-band section">
+  <div class="wrap">
+    <span class="eyebrow rv" style="justify-content:center">Prêt à comparer ?</span>
+    <h2 class="rv rv-d1">Demandez un devis.<br><em>Le prix vous parlera.</em></h2>
+    <p class="rv rv-d2">Dites-nous ce que vous cherchez. Vous recevez un prix final, livré dédouané, sous 72 h.</p>
+    <div class="rv rv-d3"><a href="mailto:contact@direct-china.fr" class="btn btn-primary">Demander un devis gratuit <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 8h11M9 3.5L13.5 8 9 12.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a></div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div><a href="index.html" class="logo"><svg class="logo-mark" viewBox="0 0 40 40" fill="none"><rect x="3" y="12" width="34" height="20" rx="2.5" stroke="#F5B301" stroke-width="2.4"/><line x1="10" y1="12" x2="10" y2="32" stroke="#F5B301" stroke-width="2"/><line x1="17" y1="12" x2="17" y2="32" stroke="#F5B301" stroke-width="2"/><line x1="24" y1="12" x2="24" y2="32" stroke="#F5B301" stroke-width="2"/><line x1="31" y1="12" x2="31" y2="32" stroke="#F5B301" stroke-width="2"/><path d="M6 8 L20 2 L34 8" stroke="#FAFBFD" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>DIRECT<em>CHINA</em></span></a><p>Import de matériel industriel en direct des usines chinoises. Prix fabricant, import géré de A à Z, livraison partout en France.</p></div>
+      <div><h4>Catalogue</h4><ul><li><a href="catalogue.html#habitat">Maisons capsules</a></li><li><a href="catalogue.html#levage">Levage &amp; élévation</a></li><li><a href="catalogue.html#precision">Soudage laser</a></li><li><a href="catalogue.html#nautisme">Nautisme &amp; spas</a></li><li><a href="catalogue.html#verts">Motoculture</a></li></ul></div>
+      <div><h4>Direct China</h4><ul><li><a href="comment-ca-marche.html">Comment ça marche</a></li><li><a href="qui-sommes-nous.html">Qui sommes-nous</a></li><li><a href="blog.html">Blog &amp; conseils</a></li><li><a href="faq.html">FAQ</a></li></ul></div>
+      <div><h4>Contact</h4><ul><li><a href="mailto:contact@direct-china.fr">contact@direct-china.fr</a></li><li><a href="#">Mentions légales</a></li><li><a href="#">CGV</a></li></ul></div>
+    </div>
+    <div class="foot-bottom"><span>© 2026 DIRECT CHINA — TOUS DROITS RÉSERVÉS</span><span>TOULOUSE, FRANCE · 43.60°N 1.44°E</span></div>
+  </div>
+</footer>
+<script src="shared.js"></script>
+</body>
+</html>

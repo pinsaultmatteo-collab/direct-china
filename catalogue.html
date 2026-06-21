@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Catalogue — Direct China | Matériel industriel au prix usine</title>
+<meta name="description" content="Le catalogue Direct China : maisons capsules, levage, soudage laser, équipement de chantier, nautisme, motoculture. Importés en direct des usines, au prix fabricant.">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..125,300..900&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<style>
+/* ---- catalogue ---- */
+.cat-index{display:grid;grid-template-columns:repeat(12,1fr);gap:22px;margin-top:54px}
+.cat-tile{grid-column:span 4;cursor:pointer;min-height:280px;display:flex;flex-direction:column;justify-content:space-between}
+.cat-tile::before{content:'';position:absolute;inset:0;border-radius:inherit;background:radial-gradient(420px 220px at var(--mx,50%) var(--my,0%),rgba(245,179,1,.1),transparent 65%);opacity:0;transition:opacity .4s;pointer-events:none}
+.cat-tile:hover::before{opacity:1}
+.cat-tile .num{position:absolute;top:22px;right:24px;font-family:var(--font-m);font-size:11px;color:var(--steel-d);letter-spacing:.14em}
+.cat-tile h3{font-size:clamp(19px,2vw,23px);margin:16px 0 9px;font-variation-settings:'wdth' 108}
+.cat-tile p{font-size:14px;color:var(--steel)}
+.cat-tile .count{display:inline-flex;align-items:center;gap:8px;margin-top:18px;font-family:var(--font-m);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--yellow)}
+.cat-tile .count svg{transition:transform .3s var(--ease)}
+.cat-tile:hover .count svg{transform:translateX(5px)}
+@media(max-width:920px){.cat-tile{grid-column:span 6}}
+@media(max-width:620px){.cat-tile{grid-column:span 12;min-height:auto}}
+
+/* ---- vue produits ---- */
+.products-view{display:none}
+.products-view.active{display:block;animation:fade .5s var(--ease)}
+.cat-view-index.hidden{display:none}
+@keyframes fade{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.back-link{display:inline-flex;align-items:center;gap:9px;font-family:var(--font-m);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--steel);margin-bottom:22px;transition:color .25s}
+.back-link:hover{color:var(--yellow)}
+.back-link svg{transform:rotate(180deg)}
+.pv-head{display:flex;align-items:flex-start;gap:22px;border-bottom:1px solid var(--line);padding-bottom:34px;margin-bottom:42px}
+.pv-head .ico{width:58px;height:58px;flex:none}
+.pv-head h2{font-size:clamp(26px,3.6vw,40px)}
+.pv-head p{color:var(--steel);margin-top:10px;max-width:620px;font-size:15.5px}
+.prod-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:22px}
+.prod{border:1px solid var(--line);border-radius:16px;overflow:hidden;background:var(--ink-2);display:flex;flex-direction:column;transition:transform .35s var(--ease),border-color .35s,box-shadow .35s}
+.prod:hover{transform:translateY(-5px);border-color:rgba(245,179,1,.4);box-shadow:0 26px 52px -24px rgba(0,0,0,.6)}
+.prod-img{height:170px;position:relative;display:flex;align-items:center;justify-content:center;background:linear-gradient(160deg,var(--ink-3),var(--ink));border-bottom:1px solid var(--line);overflow:hidden}
+.prod-img::after{content:'';position:absolute;inset:0;background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:30px 30px;opacity:.4}
+.prod-img .ico{width:60px;height:60px;color:var(--yellow);opacity:.85;position:relative;z-index:1}
+.prod-tag{position:absolute;top:12px;left:12px;z-index:2;font-family:var(--font-m);font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--steel);background:rgba(11,18,32,.6);border:1px solid var(--line);padding:5px 9px;border-radius:6px}
+.prod-body{padding:22px 22px 24px;display:flex;flex-direction:column;flex:1}
+.prod-body h3{font-size:17.5px;font-weight:800;margin-bottom:7px;font-variation-settings:'wdth' 105}
+.prod-body .spec{font-size:13px;color:var(--steel);margin-bottom:16px;flex:1}
+.prod-body .spec b{color:var(--white);font-weight:600}
+.prod-foot{display:flex;align-items:center;justify-content:space-between;gap:12px;border-top:1px solid var(--line);padding-top:16px;margin-top:auto}
+.prod-price{font-family:var(--font-m);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--steel-d)}
+.prod-price b{display:block;font-family:var(--font-d);font-size:15px;color:var(--yellow);font-weight:700;letter-spacing:0}
+.prod-cta{font-size:12.5px;font-weight:700;padding:9px 16px;border-radius:8px;background:rgba(245,179,1,.12);color:var(--yellow);border:1px solid rgba(245,179,1,.3);transition:background .25s,color .25s;white-space:nowrap}
+.prod-cta:hover{background:var(--yellow);color:var(--ink)}
+.pv-foot{margin-top:48px;border:1px dashed rgba(245,179,1,.4);border-radius:var(--radius);padding:26px 30px;background:rgba(245,179,1,.05);display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap}
+.pv-foot p{font-size:15px;color:var(--steel);max-width:560px}
+.pv-foot p strong{color:var(--white)}
+</style>
+</head>
+<body>
+
+<header id="header">
+  <div class="wrap nav">
+    <a href="index.html" class="logo" aria-label="Direct China — accueil">
+      <svg class="logo-mark" viewBox="0 0 40 40" fill="none" aria-hidden="true"><rect x="3" y="12" width="34" height="20" rx="2.5" stroke="#F5B301" stroke-width="2.4"/><line x1="10" y1="12" x2="10" y2="32" stroke="#F5B301" stroke-width="2"/><line x1="17" y1="12" x2="17" y2="32" stroke="#F5B301" stroke-width="2"/><line x1="24" y1="12" x2="24" y2="32" stroke="#F5B301" stroke-width="2"/><line x1="31" y1="12" x2="31" y2="32" stroke="#F5B301" stroke-width="2"/><path d="M6 8 L20 2 L34 8" stroke="#FAFBFD" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span>DIRECT<em>CHINA</em></span>
+    </a>
+    <nav class="nav-links" aria-label="Navigation principale">
+      <a href="catalogue.html" class="active">Catalogue</a>
+      <a href="comment-ca-marche.html">Comment ça marche</a>
+      <a href="qui-sommes-nous.html">Qui sommes-nous</a>
+      <a href="blog.html">Blog &amp; conseils</a>
+      <a href="faq.html">FAQ</a>
+    </nav>
+    <a href="mailto:contact@direct-china.fr" class="nav-cta">Demander un devis</a>
+    <button class="burger" id="burger" aria-label="Ouvrir le menu" aria-expanded="false"><span></span><span></span><span></span></button>
+  </div>
+</header>
+<div class="mobile-menu" id="mobileMenu">
+  <a href="catalogue.html">Catalogue</a>
+  <a href="comment-ca-marche.html">Comment ça marche</a>
+  <a href="qui-sommes-nous.html">Qui sommes-nous</a>
+  <a href="blog.html">Blog &amp; conseils</a>
+  <a href="faq.html">FAQ</a>
+  <a href="mailto:contact@direct-china.fr"><em>Demander un devis</em></a>
+</div>
+
+<section class="page-hero">
+  <div class="page-hero-grid" aria-hidden="true"></div>
+  <div class="wrap">
+    <div class="crumbs"><a href="index.html">Accueil</a><span>/</span><span id="crumbCat">Catalogue</span></div>
+    <span class="eyebrow rv">Le catalogue</span>
+    <h1 class="rv rv-d1">Du matériel lourd,<br>au prix léger.</h1>
+    <p class="lead rv rv-d2">Six familles d'équipements industriels, importées en direct des usines chinoises auditées par nos soins. Choisissez une catégorie pour découvrir les produits.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap">
+
+    <!-- INDEX DES CATÉGORIES -->
+    <div class="cat-view-index" id="catIndex">
+      <div class="cat-index" id="catGrid"><!-- injecté en JS --></div>
+    </div>
+
+    <!-- VUE PRODUITS -->
+    <div class="products-view" id="productsView">
+      <a class="back-link" id="backLink" href="#"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M2 8h11M9 3.5L13.5 8 9 12.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>Toutes les catégories</a>
+      <div class="pv-head">
+        <div class="ico" id="pvIco"></div>
+        <div><h2 id="pvTitle"></h2><p id="pvDesc"></p></div>
+      </div>
+      <div class="prod-grid" id="prodGrid"></div>
+      <div class="pv-foot">
+        <p><strong>Vous ne trouvez pas exactement ce qu'il vous faut ?</strong> On source n'importe quel équipement industriel à la demande : identification de l'usine, négociation, audit et import complet.</p>
+        <a href="mailto:contact@direct-china.fr?subject=Demande%20de%20sourcing" class="btn btn-primary">Demander un sourcing
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 8h11M9 3.5L13.5 8 9 12.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <a href="index.html" class="logo">
+          <svg class="logo-mark" viewBox="0 0 40 40" fill="none" aria-hidden="true"><rect x="3" y="12" width="34" height="20" rx="2.5" stroke="#F5B301" stroke-width="2.4"/><line x1="10" y1="12" x2="10" y2="32" stroke="#F5B301" stroke-width="2"/><line x1="17" y1="12" x2="17" y2="32" stroke="#F5B301" stroke-width="2"/><line x1="24" y1="12" x2="24" y2="32" stroke="#F5B301" stroke-width="2"/><line x1="31" y1="12" x2="31" y2="32" stroke="#F5B301" stroke-width="2"/><path d="M6 8 L20 2 L34 8" stroke="#FAFBFD" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span>DIRECT<em>CHINA</em></span>
+        </a>
+        <p>Import de matériel industriel en direct des usines chinoises. Prix fabricant, import géré de A à Z, livraison partout en France.</p>
+      </div>
+      <div><h4>Catalogue</h4><ul id="footCats"></ul></div>
+      <div><h4>Direct China</h4><ul>
+        <li><a href="comment-ca-marche.html">Comment ça marche</a></li>
+        <li><a href="qui-sommes-nous.html">Qui sommes-nous</a></li>
+        <li><a href="blog.html">Blog &amp; conseils</a></li>
+        <li><a href="faq.html">FAQ</a></li>
+      </ul></div>
+      <div><h4>Contact</h4><ul>
+        <li><a href="mailto:contact@direct-china.fr">contact@direct-china.fr</a></li>
+        <li><a href="mailto:contact@direct-china.fr">Demander un devis</a></li>
+        <li><a href="#">Mentions légales</a></li>
+        <li><a href="#">CGV</a></li>
+      </ul></div>
+    </div>
+    <div class="foot-bottom"><span>© 2026 DIRECT CHINA — TOUS DROITS RÉSERVÉS</span><span>TOULOUSE, FRANCE · 43.60°N 1.44°E</span></div>
+  </div>
+</footer>
+
+<script src="shared.js"></script>
+<script>
+/* ============ DONNÉES CATALOGUE ============ */
+const ICONS = {
+  habitat:'<svg viewBox="0 0 54 54"><rect x="8" y="22" width="38" height="23" rx="7"/><line x1="8" y1="31" x2="46" y2="31"/><path d="M15 22 V16 H39 V22"/><line x1="16" y1="38" x2="24" y2="38"/></svg>',
+  levage:'<svg viewBox="0 0 54 54"><rect x="13" y="8" width="28" height="6" rx="1"/><path d="M16 14 L38 27 M38 14 L16 27 M16 27 L38 40 M38 27 L16 40"/><rect x="14" y="40" width="26" height="6" rx="1"/></svg>',
+  precision:'<svg viewBox="0 0 54 54"><path d="M27 7 V29"/><path d="M21 17 L27 29 L33 17"/><circle cx="27" cy="37" r="4"/><line x1="15" y1="46" x2="39" y2="46"/></svg>',
+  chantier:'<svg viewBox="0 0 54 54"><circle cx="27" cy="27" r="18"/><circle cx="27" cy="27" r="3.5"/><path d="M27 23.5 C 21 19 18 13 22 10 C 26 13 28 19 27 23.5"/><path d="M30.5 27 C 35 21 41 18 44 22 C 41 26 35 28 30.5 27"/><path d="M27 30.5 C 33 35 36 41 32 44 C 28 41 26 35 27 30.5"/><path d="M23.5 27 C 19 33 13 36 10 32 C 13 28 19 26 23.5 27"/></svg>',
+  nautisme:'<svg viewBox="0 0 54 54"><path d="M10 26 H44 L39 38 Q27 42 15 38 Z"/><path d="M27 26 V13 L38 21 Z"/><path d="M7 45 Q13 41 19 45 T31 45 T43 45"/></svg>',
+  verts:'<svg viewBox="0 0 54 54"><circle cx="16" cy="39" r="8"/><circle cx="40" cy="39" r="5"/><path d="M8 34 V25 H26 L32 31 H44 V39"/><path d="M26 25 V18 H34"/><line x1="11" y1="31" x2="23" y2="31"/></svg>'
+};
+const CATS = [
+  {id:'habitat',num:'01',icon:'habitat',title:'Maisons capsules & modulaires',short:'Capsules habitables, modules préfabriqués, studios de jardin, extensions clé en main.',desc:'Des structures habitables produites en usine, livrées prêtes à poser : capsules autonomes, modules container aménagés, studios de jardin. Isolation, second œuvre et finitions définis avec vous avant production.',
+   products:[
+    {n:'Capsule habitable autonome 20 m²',s:'Studio tout équipé, structure acier, isolation renforcée. <b>Livrée montée</b>, raccordements prêts.'},
+    {n:'Maison modulaire container 40\'HQ',s:'Module aménagé 28 m², cuisine + salle d\'eau. Empilable et raccordable pour agrandir.'},
+    {n:'Studio de jardin préfabriqué',s:'De 12 à 30 m², ossature acier, baies vitrées. Idéal bureau, location ou chambre d\'appoint.'},
+    {n:'Module bureau de chantier',s:'Base vie isolée, électricité pré-câblée. Robuste, empilable, transport en container.'}
+   ]},
+  {id:'levage',num:'02',icon:'levage',title:'Levage & élévation',short:'Mini-nacelles, plateformes à ciseaux, ponts élévateurs auto, transpalettes.',desc:'Tout l\'univers du levage et de l\'élévation, du transpalette manuel à la nacelle automotrice. Le cœur de métier historique de notre équipe import.',
+   products:[
+    {n:'Plateforme élévatrice à ciseaux',s:'Hauteur de travail 10 m, électrique, autotractée. Idéale intérieur, sans émission.'},
+    {n:'Mini-nacelle araignée 12 m',s:'Compacte, chenillée, passe les portails. Stabilisateurs hydrauliques, châssis étroit.'},
+    {n:'Pont élévateur 2 colonnes 4 T',s:'Levage automobile, déverrouillage automatique. <b>Norme CE</b> définie avant production.'},
+    {n:'Pont ciseau encastrable auto',s:'Capacité 3 T, profil bas encastré. Géométrie et alignement, garage pro.'},
+    {n:'Transpalette manuel 2,5 T',s:'Fourches 1150 mm, roues polyuréthane. La référence robuste à prix usine.'},
+    {n:'Gerbeur semi-électrique 1,5 T',s:'Levée 3 m, montée électrique, traction manuelle. Compact pour entrepôt.'}
+   ]},
+  {id:'precision',num:'03',icon:'precision',title:'Soudage laser & cryogénie',desc:'Les technologies industrielles de pointe, accessibles au prix fabricant : soudage laser nouvelle génération et nettoyage cryogénique sans solvant.',short:'Postes de soudage laser et stations de nettoyage cryogénique, au prix fabricant.',
+   products:[
+    {n:'Poste de soudage laser portatif 1500 W',s:'Soudure, découpe et nettoyage 3-en-1. Refroidissement intégré, prise en main rapide.'},
+    {n:'Poste de soudage laser 2000 W',s:'Pour production intensive, source fibre. <b>Pénétration supérieure</b>, finition sans reprise.'},
+    {n:'Station de nettoyage cryogénique',s:'Décapage à la glace carbonique, sans eau ni solvant. Idéal moules, soudures, industrie.'}
+   ]},
+  {id:'chantier',num:'04',icon:'chantier',title:'Équipement de chantier',desc:'Le matériel lourd qui fait avancer vos chantiers : projection d\'enduit et ventilation grand volume.',short:'Machines à enduire les façades, gros ventilateurs de chantier.',
+   products:[
+    {n:'Machine à projeter l\'enduit',s:'Crépisseuse pneumatique, débit réglable. Façades et plafonds, gain de temps majeur.'},
+    {n:'Ventilateur de chantier HVLS',s:'Grand diamètre, brassage à bas régime. Ventile hangars et ateliers à faible coût.'},
+    {n:'Extracteur de chantier mobile',s:'Gaine souple, fort débit. Évacuation poussières et gaz sur chantier confiné.'}
+   ]},
+  {id:'nautisme',num:'05',icon:'nautisme',title:'Nautisme & spas',desc:'Les gros volumes loisirs, sans la marge des distributeurs : coques semi-rigides et spas.',short:'Coques de bateaux type semi-rigide, spas et bains nordiques.',
+   products:[
+    {n:'Coque semi-rigide RIB 5,5 m',s:'Flotteurs PVC ou Hypalon, console centrale. Coque V profond, finition gelcoat.'},
+    {n:'Coque semi-rigide RIB 7,5 m',s:'Version cabine, grande capacité. <b>Pré-équipée</b> pour motorisation hors-bord.'},
+    {n:'Spa balnéo 5 places',s:'Jets hydromassants, isolation pleine mousse, panneau synthétique. Prêt à poser.'},
+    {n:'Bain nordique / spa bois',s:'Cuve bois, poêle intégré ou électrique. Esthétique chalet, robustesse extérieure.'}
+   ]},
+  {id:'verts',num:'06',icon:'verts',title:'Espaces verts & motoculture',desc:'De l\'entretien d\'espaces verts au prix direct usine : autoportées et tracteurs-tondeuses.',short:'Tondeuses autoportées, tracteurs-tondeuses.',
+   products:[
+    {n:'Tondeuse autoportée 22 CV',s:'Coupe 107 cm, bac de ramassage. Moteur bicylindre, transmission hydrostatique.'},
+    {n:'Tracteur-tondeuse hydrostatique',s:'Châssis renforcé, grande autonomie. Pour grandes surfaces et terrains exigeants.'},
+    {n:'Autoportée zero-turn',s:'Rayon de braquage nul, vitesse élevée. <b>Productivité pro</b> pour paysagistes.'}
+   ]}
+];
+
+/* ============ RENDU ============ */
+const arrow = '<svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M2 8h11M9 3.5L13.5 8 9 12.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+
+// grille des catégories
+document.getElementById('catGrid').innerHTML = CATS.map((c,i)=>`
+  <article class="tile cat-tile rv ${i%3===1?'rv-d1':i%3===2?'rv-d2':''}" data-cat="${c.id}" data-tilt>
+    <span class="num">${c.num}</span>
+    <div>
+      <div class="ico">${ICONS[c.icon]}</div>
+      <h3>${c.title}</h3>
+      <p>${c.short}</p>
+    </div>
+    <span class="count">${c.products.length} produits ${arrow}</span>
+  </article>`).join('');
+
+// liens footer
+document.getElementById('footCats').innerHTML = CATS.map(c=>`<li><a href="#${c.id}">${c.title}</a></li>`).join('');
+
+// navigation vue
+const idx = document.getElementById('catIndex');
+const view = document.getElementById('productsView');
+const crumb = document.getElementById('crumbCat');
+
+function showCategory(id){
+  const c = CATS.find(x=>x.id===id); if(!c) return showIndex();
+  document.getElementById('pvIco').innerHTML = ICONS[c.icon];
+  document.getElementById('pvTitle').textContent = c.title;
+  document.getElementById('pvDesc').textContent = c.desc;
+  document.getElementById('prodGrid').innerHTML = c.products.map(p=>`
+    <article class="prod">
+      <div class="prod-img"><span class="prod-tag">Photo fournisseur</span><div class="ico">${ICONS[c.icon]}</div></div>
+      <div class="prod-body">
+        <h3>${p.n}</h3>
+        <p class="spec">${p.s}</p>
+        <div class="prod-foot">
+          <div class="prod-price">Prix<b>Sur devis</b></div>
+          <a href="mailto:contact@direct-china.fr?subject=Devis%20—%20${encodeURIComponent(p.n)}" class="prod-cta">Demander un devis</a>
+        </div>
+      </div>
+    </article>`).join('');
+  idx.classList.add('hidden'); view.classList.add('active');
+  crumb.innerHTML = `<a href="catalogue.html" style="color:var(--steel-d)">Catalogue</a> <span style="margin:0 6px">/</span> ${c.title}`;
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function showIndex(){
+  idx.classList.remove('hidden'); view.classList.remove('active');
+  crumb.textContent = 'Catalogue';
+  history.replaceState(null,'','catalogue.html');
+}
+
+document.getElementById('catGrid').addEventListener('click', e=>{
+  const t = e.target.closest('[data-cat]'); if(!t) return;
+  location.hash = t.dataset.cat;
+});
+document.getElementById('backLink').addEventListener('click', e=>{ e.preventDefault(); location.hash=''; });
+document.getElementById('footCats').addEventListener('click', ()=>setTimeout(routeFromHash,0));
+
+function routeFromHash(){
+  const id = location.hash.replace('#','');
+  if(id && CATS.find(c=>c.id===id)) showCategory(id); else showIndex();
+}
+window.addEventListener('hashchange', routeFromHash);
+routeFromHash();
+
+// tilt 3D léger sur les cartes catégories (desktop)
+if(window.matchMedia('(pointer:fine)').matches && !window.matchMedia('(prefers-reduced-motion:reduce)').matches){
+  document.querySelectorAll('[data-tilt]').forEach(el=>{
+    el.addEventListener('pointermove',ev=>{
+      const r=el.getBoundingClientRect(),x=(ev.clientX-r.left)/r.width,y=(ev.clientY-r.top)/r.height;
+      el.style.transform=`translateY(-4px) rotateY(${(x-.5)*5}deg) rotateX(${(.5-y)*5}deg)`;
+      el.style.setProperty('--mx',x*100+'%');el.style.setProperty('--my',y*100+'%');
+    });
+    el.addEventListener('pointerleave',()=>el.style.transform='');
+  });
+}
+</script>
+</body>
+</html>
