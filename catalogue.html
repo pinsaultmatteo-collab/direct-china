@@ -254,13 +254,13 @@ function showCategory(id){
       </div>
     </article>`;}).join('');
   idx.classList.add('hidden'); view.classList.add('active');
-  crumb.innerHTML = `<a href="catalogue.html" style="color:var(--steel-d)">Catalogue</a> <span style="margin:0 6px">/</span> ${c.title}`;
+  crumb.innerHTML = `<a href="/catalogue" style="color:var(--steel-d)">Catalogue</a> <span style="margin:0 6px">/</span> ${c.title}`;
   window.scrollTo({top:0,behavior:'smooth'});
 }
 function showIndex(){
   idx.classList.remove('hidden'); view.classList.remove('active');
   crumb.textContent = 'Catalogue';
-  history.replaceState(null,'','catalogue.html');
+  history.replaceState(null,'','/catalogue');
 }
 
 document.getElementById('catGrid').addEventListener('click', e=>{
