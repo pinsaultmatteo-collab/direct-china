@@ -152,6 +152,8 @@
 </footer>
 
 <script src="shared.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-config.js"></script>
 <script>
 /* ============ DONNÉES CATALOGUE ============ */
 const ICONS = {
@@ -162,7 +164,7 @@ const ICONS = {
   nautisme:'<svg viewBox="0 0 54 54"><path d="M10 26 H44 L39 38 Q27 42 15 38 Z"/><path d="M27 26 V13 L38 21 Z"/><path d="M7 45 Q13 41 19 45 T31 45 T43 45"/></svg>',
   verts:'<svg viewBox="0 0 54 54"><circle cx="16" cy="39" r="8"/><circle cx="40" cy="39" r="5"/><path d="M8 34 V25 H26 L32 31 H44 V39"/><path d="M26 25 V18 H34"/><line x1="11" y1="31" x2="23" y2="31"/></svg>'
 };
-const CATS = [
+const FALLBACK = [
   {id:'habitat',num:'01',icon:'habitat',title:'Maisons capsules & modulaires',short:'Capsules habitables, modules préfabriqués, studios de jardin, extensions clé en main.',desc:'Des structures habitables produites en usine, livrées prêtes à poser : capsules autonomes, modules container aménagés, studios de jardin. Isolation, second œuvre et finitions définis avec vous avant production.',
    products:[
     {n:'Capsule habitable autonome 20 m²',s:'Studio tout équipé, structure acier, isolation renforcée. <b>Livrée montée</b>, raccordements prêts.'},
@@ -207,45 +209,50 @@ const CATS = [
 ];
 
 /* ============ RENDU ============ */
+let CATS = FALLBACK;
 const arrow = '<svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M2 8h11M9 3.5L13.5 8 9 12.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 
-// grille des catégories
-document.getElementById('catGrid').innerHTML = CATS.map((c,i)=>`
-  <article class="tile cat-tile rv ${i%3===1?'rv-d1':i%3===2?'rv-d2':''}" data-cat="${c.id}" data-tilt>
-    <span class="num">${c.num}</span>
-    <div>
-      <div class="ico">${ICONS[c.icon]}</div>
-      <h3>${c.title}</h3>
-      <p>${c.short}</p>
-    </div>
-    <span class="count">${c.products.length} produits ${arrow}</span>
-  </article>`).join('');
-
-// liens footer
-document.getElementById('footCats').innerHTML = CATS.map(c=>`<li><a href="#${c.id}">${c.title}</a></li>`).join('');
-
-// navigation vue
 const idx = document.getElementById('catIndex');
 const view = document.getElementById('productsView');
 const crumb = document.getElementById('crumbCat');
 
+function renderIndex(){
+  document.getElementById('catGrid').innerHTML = CATS.map((c,i)=>`
+  <article class="tile cat-tile rv ${i%3===1?'rv-d1':i%3===2?'rv-d2':''}" data-cat="${c.id}" data-tilt>
+    <span class="num">${c.num||''}</span>
+    <div>
+      <div class="ico">${ICONS[c.icon]||''}</div>
+      <h3>${c.title}</h3>
+      <p>${c.short||''}</p>
+    </div>
+    <span class="count">${c.products.length} produit${c.products.length>1?'s':''} ${arrow}</span>
+  </article>`).join('');
+  document.getElementById('footCats').innerHTML = CATS.map(c=>`<li><a href="#${c.id}">${c.title}</a></li>`).join('');
+  bindTilt();
+  requestAnimationFrame(()=>document.querySelectorAll('#catGrid .rv').forEach(e=>e.classList.add('in')));
+}
+
 function showCategory(id){
   const c = CATS.find(x=>x.id===id); if(!c) return showIndex();
-  document.getElementById('pvIco').innerHTML = ICONS[c.icon];
+  document.getElementById('pvIco').innerHTML = ICONS[c.icon]||'';
   document.getElementById('pvTitle').textContent = c.title;
-  document.getElementById('pvDesc').textContent = c.desc;
-  document.getElementById('prodGrid').innerHTML = c.products.map(p=>`
+  document.getElementById('pvDesc').textContent = c.desc||'';
+  document.getElementById('prodGrid').innerHTML = c.products.map(p=>{
+    const media = (p.images && p.images.length)
+      ? `<img src="${p.images[0]}" alt="${p.n}" loading="lazy" style="width:100%;height:100%;object-fit:cover;position:relative;z-index:1">`
+      : `<span class="prod-tag">Photo fournisseur</span><div class="ico">${ICONS[c.icon]||''}</div>`;
+    return `
     <article class="prod">
-      <div class="prod-img"><span class="prod-tag">Photo fournisseur</span><div class="ico">${ICONS[c.icon]}</div></div>
+      <div class="prod-img">${media}</div>
       <div class="prod-body">
         <h3>${p.n}</h3>
-        <p class="spec">${p.s}</p>
+        <p class="spec">${p.s||''}</p>
         <div class="prod-foot">
-          <div class="prod-price">Prix<b>Sur devis</b></div>
+          <div class="prod-price">Prix<b>${p.price||'Sur devis'}</b></div>
           <a href="mailto:contact@direct-china.fr?subject=Devis%20—%20${encodeURIComponent(p.n)}" class="prod-cta">Demander un devis</a>
         </div>
       </div>
-    </article>`).join('');
+    </article>`;}).join('');
   idx.classList.add('hidden'); view.classList.add('active');
   crumb.innerHTML = `<a href="catalogue.html" style="color:var(--steel-d)">Catalogue</a> <span style="margin:0 6px">/</span> ${c.title}`;
   window.scrollTo({top:0,behavior:'smooth'});
@@ -268,10 +275,10 @@ function routeFromHash(){
   if(id && CATS.find(c=>c.id===id)) showCategory(id); else showIndex();
 }
 window.addEventListener('hashchange', routeFromHash);
-routeFromHash();
 
-// tilt 3D léger sur les cartes catégories (desktop)
-if(window.matchMedia('(pointer:fine)').matches && !window.matchMedia('(prefers-reduced-motion:reduce)').matches){
+/* tilt 3D léger sur les cartes catégories (desktop) */
+function bindTilt(){
+  if(!(window.matchMedia('(pointer:fine)').matches) || window.matchMedia('(prefers-reduced-motion:reduce)').matches) return;
   document.querySelectorAll('[data-tilt]').forEach(el=>{
     el.addEventListener('pointermove',ev=>{
       const r=el.getBoundingClientRect(),x=(ev.clientX-r.left)/r.width,y=(ev.clientY-r.top)/r.height;
@@ -281,6 +288,31 @@ if(window.matchMedia('(pointer:fine)').matches && !window.matchMedia('(prefers-r
     el.addEventListener('pointerleave',()=>el.style.transform='');
   });
 }
+
+/* ============ CHARGEMENT (Supabase → repli automatique) ============ */
+async function initCatalogue(){
+  if(window.sb){
+    try{
+      const [{data:cats,error:e1},{data:prods,error:e2}] = await Promise.all([
+        window.sb.from('categories').select('*').order('sort_order'),
+        window.sb.from('products').select('*').eq('status','published').order('sort_order')
+      ]);
+      if(!e1 && !e2 && cats && cats.length){
+        const mapped = cats.map(c=>({
+          id:c.id, num:c.num, icon:c.icon, title:c.name, short:c.blurb, desc:c.intro,
+          products:(prods||[]).filter(p=>p.category_id===c.id).map(p=>({
+            n:p.title, s:p.summary||'', images:p.images||[],
+            price:(p.price_mode==='fixed' && p.price)?Number(p.price).toLocaleString('fr-FR')+' €':(p.price_label||'Sur devis')
+          }))
+        })).filter(c=>c.products.length);
+        if(mapped.length) CATS = mapped;
+      }
+    }catch(err){ /* repli silencieux sur les données par défaut */ }
+  }
+  renderIndex();
+  routeFromHash();
+}
+initCatalogue();
 </script>
 </body>
 </html>
