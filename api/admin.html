@@ -180,10 +180,13 @@ label{display:block;font-family:var(--font-m);font-size:10.5px;letter-spacing:.1
           <div class="card">
             <h3>Publication</h3>
             <div class="field"><label>Statut</label><select id="f_status"><option value="draft">Brouillon</option><option value="published">Publié</option></select></div>
-            <div class="row2">
-              <div class="field" style="margin:0"><label>Prix</label><select id="f_priceMode"><option value="quote">Sur devis</option><option value="fixed">Montant fixe</option></select></div>
-              <div class="field" style="margin:0"><label>Libellé prix</label><input id="f_priceLabel" placeholder="Sur devis"></div>
+            <div class="field"><label>Tarification</label><select id="f_priceMode"><option value="quote">Sur devis</option><option value="fixed">Montant fixe</option></select></div>
+            <div class="row2" id="fixedPriceRow" style="display:none">
+              <div class="field" style="margin:0 0 18px"><label>Montant</label><input id="f_price" type="number" min="0" step="1" placeholder="2500"></div>
+              <div class="field" style="margin:0 0 18px"><label>Devise</label><select id="f_currency"><option value="EUR">€ EUR</option><option value="USD">$ USD</option><option value="GBP">£ GBP</option><option value="CNY">¥ CNY</option></select></div>
             </div>
+            <div class="field"><label>Libellé prix (optionnel — remplace l'affichage)</label><input id="f_priceLabel" placeholder="Sur devis"></div>
+            <div class="field" style="margin-bottom:0"><label>Quantité en stock (vide = non affiché)</label><input id="f_stock" type="number" min="0" step="1" placeholder="ex : 5"></div>
             <button class="btn btn-primary" id="saveBtn" style="width:100%;margin-top:18px">Enregistrer</button>
           </div>
           <div class="card">
@@ -283,7 +286,8 @@ function renderList(){
     const thumb=el('div',{class:'thumb'});
     if(p.images&&p.images.length){thumb.append(el('img',{src:p.images[0],alt:''}));}else{thumb.innerHTML=placeholderSVG;}
     const info=el('div',{},el('div',{class:'t-title'},p.title||'(sans titre)'),el('div',{class:'t-sum'},p.summary||''));
-    const price = p.price_mode==='fixed'&&p.price ? Number(p.price).toLocaleString('fr-FR')+' €' : (p.price_label||'Sur devis');
+    const sym={EUR:'€',USD:'$',GBP:'£',CNY:'¥'}[p.currency||'EUR']||'€';
+    const price = p.price_mode==='fixed'&&p.price!=null ? Number(p.price).toLocaleString('fr-FR')+' '+sym : (p.price_label||'Sur devis');
     const badge=el('span',{class:'badge '+(p.status==='published'?'published':'draft')}, p.status==='published'?'Publié':'Brouillon');
     const actions=el('div',{class:'t-actions'});
     const edit=el('button',{class:'btn btn-ghost btn-sm'},'Modifier'); edit.onclick=()=>openEditor(p);
@@ -307,7 +311,7 @@ $('#newBtn').addEventListener('click', ()=>newProduct());
 $('#backBtn').addEventListener('click', ()=>showScreen('listScreen'));
 window.newProduct = function(){
   current = { id: crypto.randomUUID(), category_id: CATS[0]?.id||null, title:'', summary:'', description:'',
-    price_mode:'quote', price:null, price_label:'Sur devis', supplier_url:'', images:[], status:'draft', _isNew:true };
+    price_mode:'quote', price:null, currency:'EUR', price_label:'Sur devis', stock:null, supplier_url:'', images:[], status:'draft', _isNew:true };
   fillEditor(); $('#edTitle').textContent='Nouveau produit'; $('#deleteBtn').style.display='none'; showScreen('editScreen');
 };
 function openEditor(p){
@@ -319,6 +323,10 @@ function fillEditor(){
   $('#f_summary').value=current.summary||''; $('#f_description').value=current.description||'';
   $('#f_supplier').value=current.supplier_url||''; $('#f_status').value=current.status||'draft';
   $('#f_priceMode').value=current.price_mode||'quote'; $('#f_priceLabel').value=current.price_label||'';
+  $('#f_price').value=(current.price!=null?current.price:''); $('#f_currency').value=current.currency||'EUR';
+  $('#f_stock').value=(current.stock!=null?current.stock:'');
+  $('#fixedPriceRow').style.display = (current.price_mode==='fixed')?'grid':'none';
+  $('#aiHint').textContent='';
   renderThumbs();
 }
 function showScreen(id){document.querySelectorAll('.wrap .screen').forEach(s=>{const on=(s.id===id);s.classList.toggle('active',on);s.style.display=on?'block':'none';});window.scrollTo(0,0);}
@@ -371,11 +379,17 @@ async function save(){
   current.supplier_url=$('#f_supplier').value.trim();
   current.status=$('#f_status').value;
   current.price_mode=$('#f_priceMode').value;
+  current.currency=$('#f_currency').value;
+  const priceVal=$('#f_price').value.trim();
+  current.price=(current.price_mode==='fixed' && priceVal!=='')?Number(priceVal):null;
+  const stockVal=$('#f_stock').value.trim();
+  current.stock=(stockVal!=='')?Number(stockVal):null;
   current.price_label=$('#f_priceLabel').value.trim()||(current.price_mode==='quote'?'Sur devis':null);
   if(!current.title){toast('Le titre est obligatoire.','bad');$('#f_title').focus();return;}
   const btn=$('#saveBtn'); btn.innerHTML='<span class="spin"></span>'; btn.disabled=true;
   const row={id:current.id,category_id:current.category_id,title:current.title,summary:current.summary,
-    description:current.description,price_mode:current.price_mode,price_label:current.price_label,
+    description:current.description,price_mode:current.price_mode,price:current.price,currency:current.currency,
+    price_label:current.price_label,stock:current.stock,
     supplier_url:current.supplier_url,images:current.images,status:current.status,
     sort_order:current.sort_order||0};
   const { error } = await sb.from('products').upsert(row);
@@ -450,9 +464,12 @@ $('#rewriteBtn').addEventListener('click', async ()=>{
   btn.innerHTML=old; btn.disabled=false;
 });
 
-/* prix : libellé auto */
+/* prix : afficher la ligne montant + libellé auto */
 $('#f_priceMode').addEventListener('change',e=>{
-  if(e.target.value==='quote' && !$('#f_priceLabel').value.trim()) $('#f_priceLabel').value='Sur devis';
+  const fixed = e.target.value==='fixed';
+  $('#fixedPriceRow').style.display = fixed?'grid':'none';
+  if(!fixed && !$('#f_priceLabel').value.trim()) $('#f_priceLabel').value='Sur devis';
+  if(fixed && $('#f_priceLabel').value.trim()==='Sur devis') $('#f_priceLabel').value='';
 });
 
 boot();

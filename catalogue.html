@@ -56,6 +56,31 @@
 .pv-foot{margin-top:48px;border:1px dashed rgba(245,179,1,.4);border-radius:var(--radius);padding:26px 30px;background:rgba(245,179,1,.05);display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap}
 .pv-foot p{font-size:15px;color:var(--steel);max-width:560px}
 .pv-foot p strong{color:var(--white)}
+
+/* ---- vue produit (détail) ---- */
+.pd-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:46px;align-items:start;margin-top:6px}
+@media(max-width:880px){.pd-grid{grid-template-columns:1fr;gap:30px}}
+.pd-main{border:1px solid var(--line);border-radius:16px;overflow:hidden;background:linear-gradient(160deg,var(--ink-3),var(--ink));aspect-ratio:4/3;display:flex;align-items:center;justify-content:center;position:relative}
+.pd-main::after{content:'';position:absolute;inset:0;background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:34px 34px;opacity:.35;pointer-events:none}
+.pd-main img{width:100%;height:100%;object-fit:cover;position:relative;z-index:1}
+.pd-main .ico{width:90px;height:90px;color:var(--yellow);opacity:.8;position:relative;z-index:1}
+.pd-thumbs{display:flex;gap:10px;margin-top:12px;flex-wrap:wrap}
+.pd-thumb{width:72px;height:60px;border-radius:9px;overflow:hidden;border:1px solid var(--line);cursor:pointer;background:var(--ink-3);transition:border-color .25s,transform .25s}
+.pd-thumb:hover{transform:translateY(-2px)}
+.pd-thumb.active{border-color:var(--yellow)}
+.pd-thumb img{width:100%;height:100%;object-fit:cover}
+.pd-info .eyebrow{margin-bottom:14px}
+.pd-info h1{font-size:clamp(26px,3.4vw,40px);font-variation-settings:'wdth' 108;margin-bottom:18px}
+.pd-price-row{display:flex;align-items:center;gap:16px;flex-wrap:wrap;border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:18px 0;margin-bottom:24px}
+.pd-price{font-size:30px;font-weight:900;color:var(--yellow);font-variation-settings:'wdth' 112;line-height:1}
+.pd-stock{font-family:var(--font-m);font-size:11px;letter-spacing:.1em;text-transform:uppercase;padding:6px 11px;border-radius:7px;border:1px solid var(--line);color:var(--steel)}
+.pd-stock.in{color:var(--blue);border-color:rgba(61,125,194,.4);background:rgba(61,125,194,.08)}
+.pd-stock.out{color:var(--steel-d)}
+.pd-desc{color:var(--steel);font-size:15.5px;line-height:1.7;margin-bottom:28px}
+.pd-desc p{margin-bottom:14px}.pd-desc p:last-child{margin-bottom:0}
+.pd-cta{display:flex;gap:12px;flex-wrap:wrap}
+.pd-meta{margin-top:26px;display:flex;gap:22px;flex-wrap:wrap;font-family:var(--font-m);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--steel-d)}
+.pd-meta b{display:block;font-family:var(--font-d);font-size:13px;color:var(--white);font-weight:600;letter-spacing:0;text-transform:none;margin-top:4px}
 </style>
 </head>
 <body>
@@ -118,6 +143,12 @@
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 8h11M9 3.5L13.5 8 9 12.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </a>
       </div>
+    </div>
+
+    <!-- VUE PRODUIT (détail) -->
+    <div class="products-view" id="detailView">
+      <a class="back-link" id="detailBack" href="#"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M2 8h11M9 3.5L13.5 8 9 12.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span id="detailBackLabel">Retour</span></a>
+      <div id="detailBody"></div>
     </div>
 
   </div>
@@ -215,6 +246,32 @@ const arrow = '<svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path
 const idx = document.getElementById('catIndex');
 const view = document.getElementById('productsView');
 const crumb = document.getElementById('crumbCat');
+const detail = document.getElementById('detailView');
+
+const CUR = {EUR:'€',USD:'$',GBP:'£',CNY:'¥'};
+function fmtPrice(p){
+  if(p.priceLabel) return p.priceLabel;
+  if(p.priceMode==='fixed' && p.price!=null){
+    const s=CUR[p.currency]||'€', n=Number(p.price).toLocaleString('fr-FR');
+    return (p.currency==='USD'||p.currency==='GBP') ? s+n : n+' '+s;
+  }
+  return 'Sur devis';
+}
+function stockInfo(p){
+  if(p.stock==null) return null;
+  return p.stock>0 ? {cls:'in', txt:p.stock+' en stock'} : {cls:'out', txt:'Sur commande'};
+}
+function esc(s){return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function descHtml(d){
+  if(!d) return '<p>Fiche technique complète et devis sur demande. Contactez-nous pour les spécifications détaillées.</p>';
+  return d.split(/\n{1,}/).filter(x=>x.trim()).map(x=>`<p>${esc(x.trim())}</p>`).join('');
+}
+function setView(which){
+  idx.classList.toggle('hidden', which!=='index');
+  view.classList.toggle('active', which==='category');
+  detail.classList.toggle('active', which==='product');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
 
 function renderIndex(){
   document.getElementById('catGrid').innerHTML = CATS.map((c,i)=>`
@@ -248,19 +305,74 @@ function showCategory(id){
         <h3>${p.n}</h3>
         <p class="spec">${p.s||''}</p>
         <div class="prod-foot">
-          <div class="prod-price">Prix<b>${p.price||'Sur devis'}</b></div>
-          <a href="mailto:contact@direct-china.fr?subject=Devis%20—%20${encodeURIComponent(p.n)}" class="prod-cta">Demander un devis</a>
+          <div class="prod-price">Prix<b>${fmtPrice(p)}</b></div>
+          <a href="#p/${p.id}" class="prod-cta">Voir le produit</a>
         </div>
       </div>
     </article>`;}).join('');
-  idx.classList.add('hidden'); view.classList.add('active');
   crumb.innerHTML = `<a href="/catalogue" style="color:var(--steel-d)">Catalogue</a> <span style="margin:0 6px">/</span> ${c.title}`;
-  window.scrollTo({top:0,behavior:'smooth'});
+  setView('category');
 }
 function showIndex(){
-  idx.classList.remove('hidden'); view.classList.remove('active');
   crumb.textContent = 'Catalogue';
+  setView('index');
   history.replaceState(null,'','/catalogue');
+}
+
+function findProduct(id){
+  for(const c of CATS){ const p=(c.products||[]).find(x=>x.id===id); if(p) return {p,c}; }
+  return null;
+}
+function showProduct(id){
+  const hit = findProduct(id); if(!hit) return showIndex();
+  const {p,c} = hit;
+  const imgs = p.images||[];
+  const main = imgs.length
+    ? `<img id="pdMainImg" src="${imgs[0]}" alt="${esc(p.n)}">`
+    : `<div class="ico">${ICONS[c.icon]||''}</div>`;
+  const thumbs = imgs.length>1
+    ? `<div class="pd-thumbs">${imgs.map((u,i)=>`<div class="pd-thumb${i===0?' active':''}" data-img="${u}"><img src="${u}" alt=""></div>`).join('')}</div>` : '';
+  const st = stockInfo(p);
+  const stockHtml = st ? `<span class="pd-stock ${st.cls}">${st.txt}</span>` : '';
+  const subject = encodeURIComponent('Devis — '+p.n);
+  document.getElementById('detailBackLabel').textContent = 'Retour à '+c.title;
+  document.getElementById('detailBack').setAttribute('href', '#'+c.id);
+  document.getElementById('detailBody').innerHTML = `
+    <div class="pd-grid">
+      <div>
+        <div class="pd-main">${main}</div>
+        ${thumbs}
+      </div>
+      <div class="pd-info">
+        <div class="eyebrow">${c.title}</div>
+        <h1>${esc(p.n)}</h1>
+        <div class="pd-price-row">
+          <div class="pd-price">${fmtPrice(p)}</div>
+          ${stockHtml}
+        </div>
+        <div class="pd-desc">${descHtml(p.desc)}</div>
+        <div class="pd-cta">
+          <a class="btn btn-primary" href="mailto:contact@direct-china.fr?subject=${subject}">Demander un devis
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 8h11M9 3.5L13.5 8 9 12.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+          <a class="btn btn-ghost" href="#${c.id}">Voir la catégorie</a>
+        </div>
+        <div class="pd-meta">
+          <div>Catégorie<b>${c.title}</b></div>
+          <div>Import<b>Direct usine · DDP France</b></div>
+          <div>Paiement<b>50 % / 50 %</b></div>
+        </div>
+      </div>
+    </div>`;
+  document.querySelectorAll('#detailBody .pd-thumb').forEach(t=>{
+    t.addEventListener('click',()=>{
+      const m=document.getElementById('pdMainImg'); if(m) m.src=t.dataset.img;
+      document.querySelectorAll('#detailBody .pd-thumb').forEach(x=>x.classList.remove('active'));
+      t.classList.add('active');
+    });
+  });
+  crumb.innerHTML = `<a href="/catalogue" style="color:var(--steel-d)">Catalogue</a> <span style="margin:0 6px">/</span> <a href="#${c.id}" style="color:var(--steel-d)">${c.title}</a> <span style="margin:0 6px">/</span> ${esc(p.n)}`;
+  setView('product');
 }
 
 document.getElementById('catGrid').addEventListener('click', e=>{
@@ -271,8 +383,9 @@ document.getElementById('backLink').addEventListener('click', e=>{ e.preventDefa
 document.getElementById('footCats').addEventListener('click', ()=>setTimeout(routeFromHash,0));
 
 function routeFromHash(){
-  const id = location.hash.replace('#','');
-  if(id && CATS.find(c=>c.id===id)) showCategory(id); else showIndex();
+  const h = location.hash.replace(/^#/,'');
+  if(h.indexOf('p/')===0){ showProduct(h.slice(2)); return; }
+  if(h && CATS.find(c=>c.id===h)) showCategory(h); else showIndex();
 }
 window.addEventListener('hashchange', routeFromHash);
 
@@ -301,14 +414,20 @@ async function initCatalogue(){
         const mapped = cats.map(c=>({
           id:c.id, num:c.num, icon:c.icon, title:c.name, short:c.blurb, desc:c.intro,
           products:(prods||[]).filter(p=>p.category_id===c.id).map(p=>({
-            n:p.title, s:p.summary||'', images:p.images||[],
-            price:(p.price_mode==='fixed' && p.price)?Number(p.price).toLocaleString('fr-FR')+' €':(p.price_label||'Sur devis')
+            id:p.id, n:p.title, s:p.summary||'', desc:p.description||'', images:p.images||[],
+            priceMode:p.price_mode||'quote', price:(p.price!=null?Number(p.price):null),
+            currency:p.currency||'EUR', priceLabel:p.price_label||'', stock:(p.stock!=null?Number(p.stock):null)
           }))
         })).filter(c=>c.products.length);
         if(mapped.length) CATS = mapped;
       }
     }catch(err){ /* repli silencieux sur les données par défaut */ }
   }
+  CATS = CATS.map(c=>({...c, products:(c.products||[]).map((p,i)=>({
+    id:p.id||(c.id+'-'+i), n:p.n, s:p.s||'', desc:p.desc||'', images:p.images||[],
+    priceMode:p.priceMode||'quote', price:(p.price!=null?p.price:null),
+    currency:p.currency||'EUR', priceLabel:p.priceLabel||'', stock:(p.stock!=null?p.stock:null)
+  }))}));
   renderIndex();
   routeFromHash();
 }
