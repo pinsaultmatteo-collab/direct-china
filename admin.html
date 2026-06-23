@@ -170,6 +170,11 @@ label{display:block;font-family:var(--font-m);font-size:10.5px;letter-spacing:.1
           <div class="field"><label>Accroche (ligne affichée sur la carte)</label><textarea id="f_summary" placeholder="Une phrase courte et concrète : usage, atout clé."></textarea></div>
           <div class="field"><label>Description complète (page produit, à venir)</label><textarea id="f_description" style="min-height:160px" placeholder="Description détaillée, spécifications, arguments. À réécrire dans la voix Direct China."></textarea></div>
           <div class="field"><label>Lien fournisseur Alibaba (interne, jamais affiché)</label><input id="f_supplier" placeholder="https://www.alibaba.com/product-detail/..."></div>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:-6px">
+            <button class="btn btn-ghost btn-sm" id="importBtn" type="button">⤓ Pré-remplir depuis ce lien</button>
+            <button class="btn btn-ghost btn-sm" id="rewriteBtn" type="button">✦ Réécrire en voix Direct China</button>
+          </div>
+          <p id="aiHint" style="font-size:12px;color:var(--steel-d);margin-top:10px;line-height:1.4"></p>
         </div>
         <div class="side">
           <div class="card">
@@ -390,6 +395,59 @@ $('#deleteBtn').addEventListener('click', async()=>{
   }
   toast('Produit supprimé','ok');
   await loadAll(); showScreen('listScreen');
+});
+
+/* ---------- Assistant d'import / réécriture (fonctions Vercel) ---------- */
+async function callApi(path, payload){
+  let r;
+  try{
+    r = await fetch(path, {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload)});
+  }catch(_){ throw new Error('offline'); }
+  const ct = r.headers.get('content-type')||'';
+  if(!ct.includes('application/json')) throw new Error('offline'); // réponse HTML = fonction non déployée (test local)
+  const j = await r.json();
+  if(!r.ok) throw new Error(j.error || ('Erreur '+r.status));
+  return j;
+}
+$('#importBtn').addEventListener('click', async ()=>{
+  const url = $('#f_supplier').value.trim();
+  if(!url){ toast('Colle d\'abord le lien Alibaba dans le champ ci-dessus.','bad'); $('#f_supplier').focus(); return; }
+  const btn=$('#importBtn'), old=btn.innerHTML; btn.innerHTML='<span class="spin"></span>'; btn.disabled=true;
+  $('#aiHint').textContent='Import en cours…';
+  try{
+    const d = await callApi('/api/import', {url, productId: current.id});
+    if(d.title && !$('#f_title').value.trim()) $('#f_title').value = d.title;
+    if(d.images && d.images.length){ d.images.forEach(u=>current.images.push(u)); renderThumbs(); }
+    const bits = [];
+    if(d.images && d.images.length) bits.push(`${d.images.length} photo(s) importée(s)${d.rehosted?'':' (lien externe — ré-héberge-les)'}`);
+    if(d.price) bits.push(`prix usine constaté : ${d.price} (interne, ne pas publier tel quel)`);
+    $('#aiHint').textContent = (bits.join(' · ')||'Import terminé.') + ' — relis et réécris avant de publier.';
+    toast('Fiche pré-remplie','ok');
+  }catch(e){
+    $('#aiHint').textContent='';
+    toast(e.message==='offline' ? 'L\'import sera dispo une fois le site déployé sur Vercel.' : e.message, 'bad');
+  }
+  btn.innerHTML=old; btn.disabled=false;
+});
+$('#rewriteBtn').addEventListener('click', async ()=>{
+  const title=$('#f_title').value.trim();
+  const raw=[$('#f_summary').value, $('#f_description').value].filter(Boolean).join('\n');
+  if(!title && !raw){ toast('Rien à réécrire pour l\'instant.','bad'); return; }
+  const btn=$('#rewriteBtn'), old=btn.innerHTML; btn.innerHTML='<span class="spin"></span>'; btn.disabled=true;
+  $('#aiHint').textContent='Réécriture en cours…';
+  try{
+    const cat = ($('#f_category').selectedOptions[0]||{}).textContent||'';
+    const d = await callApi('/api/rewrite', {title, raw, category:cat});
+    if(d.title) $('#f_title').value=d.title;
+    if(d.summary) $('#f_summary').value=d.summary;
+    if(d.description) $('#f_description').value=d.description;
+    $('#aiHint').textContent='Texte réécrit dans la voix Direct China — relis avant d\'enregistrer.';
+    toast('Texte réécrit','ok');
+  }catch(e){
+    $('#aiHint').textContent='';
+    toast(e.message==='offline' ? 'La réécriture sera dispo une fois déployée sur Vercel (+ clé API).' : e.message, 'bad');
+  }
+  btn.innerHTML=old; btn.disabled=false;
 });
 
 /* prix : libellé auto */
