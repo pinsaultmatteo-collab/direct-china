@@ -123,7 +123,7 @@ label{display:block;font-family:var(--font-m);font-size:10.5px;letter-spacing:.1
 <body>
 
 <!-- ============ LOGIN ============ -->
-<div class="login-wrap screen active" id="loginScreen">
+<div class="login-wrap" id="loginScreen">
   <div class="login-card">
     <div class="logo"><svg viewBox="0 0 40 40" fill="none"><rect x="3" y="12" width="34" height="20" rx="2.5" stroke="#F5B301" stroke-width="2.4"/><line x1="10" y1="12" x2="10" y2="32" stroke="#F5B301" stroke-width="2"/><line x1="17" y1="12" x2="17" y2="32" stroke="#F5B301" stroke-width="2"/><line x1="24" y1="12" x2="24" y2="32" stroke="#F5B301" stroke-width="2"/><line x1="31" y1="12" x2="31" y2="32" stroke="#F5B301" stroke-width="2"/><path d="M6 8 L20 2 L34 8" stroke="#FAFBFD" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>DIRECT<em>CHINA</em></span></div>
     <p class="sub">Console produits</p>
@@ -224,7 +224,7 @@ async function boot(){
   if(session) enterApp(session); 
 }
 function enterApp(session){
-  $('#loginScreen').classList.remove('active');
+  $('#loginScreen').style.display='none';
   $('#app').style.display='block';
   $('#who').textContent = session.user.email;
   loadAll();
@@ -298,7 +298,7 @@ async function togglePublish(p){
 }
 
 /* ---------- ÉDITEUR ---------- */
-$('#newBtn').addEventListener('click', newProduct);
+$('#newBtn').addEventListener('click', ()=>newProduct());
 $('#backBtn').addEventListener('click', ()=>showScreen('listScreen'));
 window.newProduct = function(){
   current = { id: crypto.randomUUID(), category_id: CATS[0]?.id||null, title:'', summary:'', description:'',
@@ -316,7 +316,7 @@ function fillEditor(){
   $('#f_priceMode').value=current.price_mode||'quote'; $('#f_priceLabel').value=current.price_label||'';
   renderThumbs();
 }
-function showScreen(id){document.querySelectorAll('.wrap .screen').forEach(s=>s.classList.remove('active'));$('#'+id).classList.add('active');window.scrollTo(0,0);}
+function showScreen(id){document.querySelectorAll('.wrap .screen').forEach(s=>{const on=(s.id===id);s.classList.toggle('active',on);s.style.display=on?'block':'none';});window.scrollTo(0,0);}
 
 /* images */
 function renderThumbs(){
