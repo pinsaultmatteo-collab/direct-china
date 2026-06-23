@@ -301,6 +301,7 @@ header.scrolled{
 }
 .cat-card:hover{border-color:rgba(245,179,1,.4);box-shadow:0 30px 60px -24px rgba(0,0,0,.6)}
 .cat-card:hover::before{opacity:1}
+.cat-cover{position:absolute;inset:0;z-index:6}
 .cat-card.c1,.cat-card.c2,.cat-card.c3,.cat-card.c4{grid-column:span 4}
 .cat-card.sourcing{grid-column:span 12;min-height:auto;flex-direction:row;align-items:center;gap:30px}
 .cat-card.sourcing>div{display:flex;align-items:center;gap:26px;flex:1}
@@ -765,7 +766,7 @@ footer{background:#070C16;border-top:1px solid var(--line);padding:64px 0 36px}
 
     <div class="cats-grid">
       <article class="cat-card c1 rv" data-tilt>
-        <span class="cat-num">HABITAT</span>
+        <a class="cat-cover" href="catalogue.html#habitat" aria-label="Voir Maisons capsules & modulaires"></a><span class="cat-num">HABITAT</span>
         <div>
           <div class="cat-ico"><svg viewBox="0 0 54 54"><rect x="8" y="22" width="38" height="23" rx="7"/><line x1="8" y1="31" x2="46" y2="31"/><path d="M15 22 V16 H39 V22"/><line x1="16" y1="38" x2="24" y2="38"/></svg></div>
           <div class="cat-body">
@@ -777,7 +778,7 @@ footer{background:#070C16;border-top:1px solid var(--line);padding:64px 0 36px}
       </article>
 
       <article class="cat-card c2 rv rv-d1" data-tilt>
-        <span class="cat-num">LEVAGE</span>
+        <a class="cat-cover" href="catalogue.html#levage" aria-label="Voir Levage & élévation"></a><span class="cat-num">LEVAGE</span>
         <div>
           <div class="cat-ico"><svg viewBox="0 0 54 54"><rect x="13" y="8" width="28" height="6" rx="1"/><path d="M16 14 L38 27 M38 14 L16 27 M16 27 L38 40 M38 27 L16 40"/><rect x="14" y="40" width="26" height="6" rx="1"/></svg></div>
           <div class="cat-body">
@@ -789,7 +790,7 @@ footer{background:#070C16;border-top:1px solid var(--line);padding:64px 0 36px}
       </article>
 
       <article class="cat-card c3 rv rv-d2" data-tilt>
-        <span class="cat-num">PRÉCISION</span>
+        <a class="cat-cover" href="catalogue.html#precision" aria-label="Voir Soudage laser & cryogénie"></a><span class="cat-num">PRÉCISION</span>
         <div>
           <div class="cat-ico"><svg viewBox="0 0 54 54"><path d="M27 7 V29"/><path d="M21 17 L27 29 L33 17"/><circle cx="27" cy="37" r="4"/><line x1="15" y1="46" x2="39" y2="46"/></svg></div>
           <div class="cat-body">
@@ -801,7 +802,7 @@ footer{background:#070C16;border-top:1px solid var(--line);padding:64px 0 36px}
       </article>
 
       <article class="cat-card c3 rv" data-tilt>
-        <span class="cat-num">CHANTIER</span>
+        <a class="cat-cover" href="catalogue.html#chantier" aria-label="Voir Équipement de chantier"></a><span class="cat-num">CHANTIER</span>
         <div>
           <div class="cat-ico"><svg viewBox="0 0 54 54"><circle cx="27" cy="27" r="18"/><circle cx="27" cy="27" r="3.5"/><path d="M27 23.5 C 21 19 18 13 22 10 C 26 13 28 19 27 23.5"/><path d="M30.5 27 C 35 21 41 18 44 22 C 41 26 35 28 30.5 27"/><path d="M27 30.5 C 33 35 36 41 32 44 C 28 41 26 35 27 30.5"/><path d="M23.5 27 C 19 33 13 36 10 32 C 13 28 19 26 23.5 27"/></svg></div>
           <div class="cat-body">
@@ -813,7 +814,7 @@ footer{background:#070C16;border-top:1px solid var(--line);padding:64px 0 36px}
       </article>
 
       <article class="cat-card c4 rv rv-d1" data-tilt>
-        <span class="cat-num">NAUTISME · SPA</span>
+        <a class="cat-cover" href="catalogue.html#nautisme" aria-label="Voir Nautisme & spas"></a><span class="cat-num">NAUTISME · SPA</span>
         <div>
           <div class="cat-ico"><svg viewBox="0 0 54 54"><path d="M10 26 H44 L39 38 Q27 42 15 38 Z"/><path d="M27 26 V13 L38 21 Z"/><path d="M7 45 Q13 41 19 45 T31 45 T43 45"/></svg></div>
           <div class="cat-body">
@@ -825,7 +826,7 @@ footer{background:#070C16;border-top:1px solid var(--line);padding:64px 0 36px}
       </article>
 
       <article class="cat-card c4 rv rv-d2" data-tilt>
-        <span class="cat-num">ESPACES VERTS</span>
+        <a class="cat-cover" href="catalogue.html#verts" aria-label="Voir Espaces verts & motoculture"></a><span class="cat-num">ESPACES VERTS</span>
         <div>
           <div class="cat-ico"><svg viewBox="0 0 54 54"><circle cx="16" cy="39" r="8"/><circle cx="40" cy="39" r="5"/><path d="M8 34 V25 H26 L32 31 H44 V39"/><path d="M26 25 V18 H34"/><line x1="11" y1="31" x2="23" y2="31"/></svg></div>
           <div class="cat-body">
@@ -837,7 +838,7 @@ footer{background:#070C16;border-top:1px solid var(--line);padding:64px 0 36px}
       </article>
 
       <article class="cat-card sourcing rv" data-tilt>
-        <span class="cat-num">SUR DEVIS</span>
+        <a class="cat-cover" href="mailto:contact@direct-china.fr?subject=Demande%20de%20sourcing" aria-label="Demander un sourcing"></a><span class="cat-num">SUR DEVIS</span>
         <div>
           <div class="cat-ico"><svg viewBox="0 0 54 54"><circle cx="27" cy="27" r="16"/><path d="M27 17 V27 L34 31"/><path d="M44 44 L38 38"/></svg></div>
           <div class="cat-body">

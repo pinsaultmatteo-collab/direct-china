@@ -81,6 +81,72 @@
 .pd-cta{display:flex;gap:12px;flex-wrap:wrap}
 .pd-meta{margin-top:26px;display:flex;gap:22px;flex-wrap:wrap;font-family:var(--font-m);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--steel-d)}
 .pd-meta b{display:block;font-family:var(--font-d);font-size:13px;color:var(--white);font-weight:600;letter-spacing:0;text-transform:none;margin-top:4px}
+
+/* ---- mode navigation : fond clair pour la liste et la fiche ---- */
+body.browse .section{background:var(--paper);color:var(--ink)}
+body.product .page-hero{display:none}
+body.product .section{padding-top:116px}
+body.browse .pv-head{border-bottom-color:var(--line-light)}
+body.browse .pv-head h2{color:var(--ink)}
+body.browse .pv-head p{color:var(--steel-d)}
+body.browse .back-link{color:var(--steel-d)}
+body.browse .back-link:hover{color:var(--yellow-d)}
+body.browse .prod{background:var(--white);border-color:var(--line-light)}
+body.browse .prod:hover{border-color:var(--yellow-d);box-shadow:0 26px 52px -24px rgba(11,18,32,.18)}
+body.browse .prod-img{background:linear-gradient(160deg,#E4E9F0,#F3F5F8);border-bottom-color:var(--line-light)}
+body.browse .prod-img::after{opacity:.5}
+body.browse .prod-img .ico{color:var(--yellow-d)}
+body.browse .prod-tag{background:rgba(255,255,255,.72);border-color:var(--line-light);color:var(--steel-d)}
+body.browse .prod-body h3{color:var(--ink)}
+body.browse .prod-body .spec{color:var(--steel-d)}
+body.browse .prod-body .spec b{color:var(--ink)}
+body.browse .prod-foot{border-top-color:var(--line-light)}
+body.browse .prod-price{color:var(--steel-d)}
+body.browse .prod-price b{color:var(--yellow-d)}
+body.browse .prod-cta{background:var(--ink);color:var(--white);border-color:var(--ink)}
+body.browse .prod-cta:hover{background:var(--yellow);color:var(--ink);border-color:var(--yellow)}
+body.browse .pv-foot{background:rgba(245,179,1,.08);border-color:rgba(217,158,0,.5)}
+body.browse .pv-foot p{color:var(--steel-d)}
+body.browse .pv-foot p strong{color:var(--ink)}
+
+/* fiche produit, fond clair */
+body.browse #detailView .eyebrow{color:var(--yellow-d)}
+body.browse #detailView .eyebrow::before{background:var(--yellow-d)}
+body.browse .pd-main{background:linear-gradient(160deg,#E4E9F0,#F3F5F8);border-color:var(--line-light)}
+body.browse .pd-main::after{opacity:.45}
+body.browse .pd-main .ico{color:var(--yellow-d)}
+body.browse .pd-thumb{border-color:var(--line-light);background:#E4E9F0}
+body.browse .pd-thumb.active{border-color:var(--yellow-d)}
+body.browse .pd-info h1{color:var(--ink)}
+body.browse .pd-price-row{border-color:var(--line-light)}
+body.browse .pd-price{color:var(--yellow-d)}
+body.browse .pd-stock{border-color:var(--line-light);color:var(--steel-d)}
+body.browse .pd-stock.in{color:var(--blue);border-color:rgba(61,125,194,.4);background:rgba(61,125,194,.08)}
+body.browse .pd-desc{color:#3D4A5E}
+body.browse .pd-meta{color:var(--steel-d)}
+body.browse .pd-meta b{color:var(--ink)}
+body.browse #detailView .btn-ghost{border-color:var(--line-light);color:var(--ink);background:transparent}
+body.browse #detailView .btn-ghost:hover{background:rgba(11,18,32,.05)}
+
+/* galerie gauche sticky */
+.pd-left{position:sticky;top:100px;align-self:start}
+@media(max-width:880px){.pd-left{position:static}}
+
+/* flèches galerie */
+.pd-main .pd-arrow{position:absolute;z-index:3;top:50%;transform:translateY(-50%);width:42px;height:42px;border-radius:50%;background:rgba(11,18,32,.55);border:1px solid rgba(255,255,255,.22);color:#fff;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(4px);transition:background .2s;cursor:pointer}
+.pd-main .pd-arrow:hover{background:var(--yellow);color:var(--ink)}
+.pd-main .pd-prev{left:12px}.pd-main .pd-next{right:12px}
+.pd-main .pd-arrow svg{width:18px;height:18px}
+.pd-count{position:absolute;z-index:3;bottom:12px;right:14px;font-family:var(--font-m);font-size:10.5px;letter-spacing:.1em;color:#fff;background:rgba(11,18,32,.55);border:1px solid rgba(255,255,255,.22);padding:4px 9px;border-radius:7px;backdrop-filter:blur(4px)}
+
+/* bloc « nos autres produits » */
+.pd-related{margin-top:66px;padding-top:44px;border-top:1px solid var(--line)}
+body.browse .pd-related{border-top-color:var(--line-light)}
+.pd-related h2{font-size:clamp(22px,2.6vw,30px);margin-bottom:6px}
+body.browse .pd-related h2{color:var(--ink)}
+.pd-related .sub{font-size:14px;color:var(--steel);margin-bottom:28px}
+body.browse .pd-related .sub{color:var(--steel-d)}
+.pd-related-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:20px}
 </style>
 </head>
 <body>
@@ -270,6 +336,8 @@ function setView(which){
   idx.classList.toggle('hidden', which!=='index');
   view.classList.toggle('active', which==='category');
   detail.classList.toggle('active', which==='product');
+  document.body.classList.toggle('browse', which!=='index');
+  document.body.classList.toggle('product', which==='product');
   window.scrollTo({top:0,behavior:'smooth'});
 }
 
@@ -330,17 +398,48 @@ function showProduct(id){
   const main = imgs.length
     ? `<img id="pdMainImg" src="${imgs[0]}" alt="${esc(p.n)}">`
     : `<div class="ico">${ICONS[c.icon]||''}</div>`;
+  const navArrows = imgs.length>1 ? `
+        <button class="pd-arrow pd-prev" id="pdPrev" aria-label="Photo précédente"><svg viewBox="0 0 16 16" fill="none" style="transform:rotate(180deg)"><path d="M2 8h11M9 3.5L13.5 8 9 12.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        <button class="pd-arrow pd-next" id="pdNext" aria-label="Photo suivante"><svg viewBox="0 0 16 16" fill="none"><path d="M2 8h11M9 3.5L13.5 8 9 12.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        <span class="pd-count" id="pdCount">1 / ${imgs.length}</span>` : '';
   const thumbs = imgs.length>1
-    ? `<div class="pd-thumbs">${imgs.map((u,i)=>`<div class="pd-thumb${i===0?' active':''}" data-img="${u}"><img src="${u}" alt=""></div>`).join('')}</div>` : '';
+    ? `<div class="pd-thumbs">${imgs.map((u,i)=>`<div class="pd-thumb${i===0?' active':''}" data-i="${i}"><img src="${u}" alt=""></div>`).join('')}</div>` : '';
   const st = stockInfo(p);
   const stockHtml = st ? `<span class="pd-stock ${st.cls}">${st.txt}</span>` : '';
   const subject = encodeURIComponent('Devis — '+p.n);
+
+  // produits de la même catégorie
+  const others = (c.products||[]).filter(x=>x.id!==p.id).slice(0,4);
+  const related = others.length ? `
+    <div class="pd-related">
+      <h2>Nos autres produits</h2>
+      <p class="sub">Dans la catégorie ${c.title}</p>
+      <div class="pd-related-grid">
+        ${others.map(o=>{
+          const om = (o.images&&o.images.length)
+            ? `<img src="${o.images[0]}" alt="${esc(o.n)}" loading="lazy" style="width:100%;height:100%;object-fit:cover;position:relative;z-index:1">`
+            : `<span class="prod-tag">Photo fournisseur</span><div class="ico">${ICONS[c.icon]||''}</div>`;
+          return `<article class="prod">
+            <div class="prod-img">${om}</div>
+            <div class="prod-body">
+              <h3>${esc(o.n)}</h3>
+              <p class="spec">${esc(o.s||'')}</p>
+              <div class="prod-foot">
+                <div class="prod-price">Prix<b>${fmtPrice(o)}</b></div>
+                <a href="#p/${o.id}" class="prod-cta">Voir le produit</a>
+              </div>
+            </div>
+          </article>`;
+        }).join('')}
+      </div>
+    </div>` : '';
+
   document.getElementById('detailBackLabel').textContent = 'Retour à '+c.title;
   document.getElementById('detailBack').setAttribute('href', '#'+c.id);
   document.getElementById('detailBody').innerHTML = `
     <div class="pd-grid">
-      <div>
-        <div class="pd-main">${main}</div>
+      <div class="pd-left">
+        <div class="pd-main">${main}${navArrows}</div>
         ${thumbs}
       </div>
       <div class="pd-info">
@@ -363,14 +462,23 @@ function showProduct(id){
           <div>Paiement<b>50 % / 50 %</b></div>
         </div>
       </div>
-    </div>`;
-  document.querySelectorAll('#detailBody .pd-thumb').forEach(t=>{
-    t.addEventListener('click',()=>{
-      const m=document.getElementById('pdMainImg'); if(m) m.src=t.dataset.img;
-      document.querySelectorAll('#detailBody .pd-thumb').forEach(x=>x.classList.remove('active'));
-      t.classList.add('active');
-    });
-  });
+    </div>
+    ${related}`;
+
+  // galerie : flèches + vignettes
+  let gi = 0;
+  function setImg(i){
+    if(!imgs.length) return;
+    gi = (i + imgs.length) % imgs.length;
+    const m=document.getElementById('pdMainImg'); if(m) m.src=imgs[gi];
+    const cnt=document.getElementById('pdCount'); if(cnt) cnt.textContent=(gi+1)+' / '+imgs.length;
+    document.querySelectorAll('#detailBody .pd-thumb').forEach((x,k)=>x.classList.toggle('active',k===gi));
+  }
+  const prev=document.getElementById('pdPrev'), next=document.getElementById('pdNext');
+  if(prev) prev.addEventListener('click',()=>setImg(gi-1));
+  if(next) next.addEventListener('click',()=>setImg(gi+1));
+  document.querySelectorAll('#detailBody .pd-thumb').forEach(t=>t.addEventListener('click',()=>setImg(parseInt(t.dataset.i,10))));
+
   crumb.innerHTML = `<a href="/catalogue" style="color:var(--steel-d)">Catalogue</a> <span style="margin:0 6px">/</span> <a href="#${c.id}" style="color:var(--steel-d)">${c.title}</a> <span style="margin:0 6px">/</span> ${esc(p.n)}`;
   setView('product');
 }
