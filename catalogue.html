@@ -40,7 +40,7 @@
 .prod-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:22px}
 .prod{border:1px solid var(--line);border-radius:16px;overflow:hidden;background:var(--ink-2);display:flex;flex-direction:column;transition:transform .35s var(--ease),border-color .35s,box-shadow .35s}
 .prod:hover{transform:translateY(-5px);border-color:rgba(245,179,1,.4);box-shadow:0 26px 52px -24px rgba(0,0,0,.6)}
-.prod-img{height:170px;position:relative;display:flex;align-items:center;justify-content:center;background:linear-gradient(160deg,var(--ink-3),var(--ink));border-bottom:1px solid var(--line);overflow:hidden}
+.prod-img{aspect-ratio:1/1;position:relative;display:flex;align-items:center;justify-content:center;background:linear-gradient(160deg,var(--ink-3),var(--ink));border-bottom:1px solid var(--line);overflow:hidden}
 .prod-img::after{content:'';position:absolute;inset:0;background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:30px 30px;opacity:.4}
 .prod-img .ico{width:60px;height:60px;color:var(--yellow);opacity:.85;position:relative;z-index:1}
 .prod-tag{position:absolute;top:12px;left:12px;z-index:2;font-family:var(--font-m);font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--steel);background:rgba(11,18,32,.6);border:1px solid var(--line);padding:5px 9px;border-radius:6px}
@@ -364,7 +364,7 @@ function showCategory(id){
   document.getElementById('pvDesc').textContent = c.desc||'';
   document.getElementById('prodGrid').innerHTML = c.products.map(p=>{
     const media = (p.images && p.images.length)
-      ? `<img src="${p.images[0]}" alt="${p.n}" loading="lazy" style="width:100%;height:100%;object-fit:cover;position:relative;z-index:1">`
+      ? `<img src="${p.images[0]}" alt="${p.n}" loading="lazy" style="width:100%;height:100%;object-fit:contain;position:relative;z-index:1;padding:14px">`
       : `<span class="prod-tag">Photo fournisseur</span><div class="ico">${ICONS[c.icon]||''}</div>`;
     return `
     <article class="prod">
@@ -417,7 +417,7 @@ function showProduct(id){
       <div class="pd-related-grid">
         ${others.map(o=>{
           const om = (o.images&&o.images.length)
-            ? `<img src="${o.images[0]}" alt="${esc(o.n)}" loading="lazy" style="width:100%;height:100%;object-fit:cover;position:relative;z-index:1">`
+            ? `<img src="${o.images[0]}" alt="${esc(o.n)}" loading="lazy" style="width:100%;height:100%;object-fit:contain;position:relative;z-index:1;padding:14px">`
             : `<span class="prod-tag">Photo fournisseur</span><div class="ico">${ICONS[c.icon]||''}</div>`;
           return `<article class="prod">
             <div class="prod-img">${om}</div>
