@@ -224,10 +224,30 @@ body.browse .pd-adv .adv p{color:var(--steel-d)}
 .cart-sub b{font-size:23px;font-weight:900;color:var(--white);font-variation-settings:'wdth' 110}
 .cart-note{font-size:11.5px;color:var(--steel-d);text-align:center;line-height:1.5}
 @media(max-width:480px){.cart-drawer{width:100%}}
+
+/* ---- boutique catalogue ---- */
+.shop-bar{display:flex;gap:14px;flex-wrap:wrap;align-items:center;margin-bottom:18px}
+.shop-search{flex:1;min-width:240px;display:flex;align-items:center;gap:10px;background:var(--white);border:1px solid var(--line-light);border-radius:12px;padding:0 14px}
+.shop-search svg{width:18px;height:18px;color:var(--steel-d);flex:none}
+.shop-search input{flex:1;border:none;background:none;padding:14px 0;font-family:var(--font-d);font-size:15px;color:var(--ink);min-width:0}
+.shop-search input:focus{outline:none}
+.shop-sort{background:var(--white);border:1px solid var(--line-light);border-radius:12px;padding:14px;font-family:var(--font-d);font-size:14px;color:var(--ink);cursor:pointer}
+.shop-sort:focus{outline:none;border-color:var(--yellow-d)}
+.shop-chips{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:18px}
+.chip{font-family:var(--font-m);font-size:12px;letter-spacing:.03em;padding:9px 15px;border-radius:999px;border:1px solid var(--line-light);background:var(--white);color:var(--steel-d);cursor:pointer;transition:background .2s,color .2s,border-color .2s}
+.chip:hover{border-color:var(--yellow-d);color:var(--ink)}
+.chip.on{background:var(--ink);color:var(--white);border-color:var(--ink)}
+.shop-meta{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:22px;flex-wrap:wrap}
+#shopCount{font-family:var(--font-m);font-size:12.5px;color:var(--steel-d);letter-spacing:.03em}
+.shop-cat-link{font-family:var(--font-m);font-size:12.5px;color:var(--yellow-d);font-weight:600}
+.shop-cat-link:hover{text-decoration:underline}
+.prod-cat-tag{display:inline-block;font-family:var(--font-m);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--steel-d);margin-bottom:8px}
+.shop-empty{text-align:center;padding:54px 20px;color:var(--steel-d)}
+.shop-empty p{margin-bottom:16px;font-size:15px}
 </style>
 <script type="application/ld+json" data-dc="org">{"@context": "https://schema.org", "@type": "Organization", "name": "Direct China", "url": "https://direct-china.fr", "logo": "https://direct-china.fr/logo-512.png", "image": "https://direct-china.fr/og-image.png", "description": "Import de matériel industriel en direct des usines chinoises : prix fabricant, import géré de A à Z, livraison dédouanée en France.", "email": "contact@direct-china.fr", "areaServed": {"@type": "Country", "name": "France"}, "address": {"@type": "PostalAddress", "addressCountry": "FR"}, "contactPoint": {"@type": "ContactPoint", "email": "contact@direct-china.fr", "contactType": "sales", "areaServed": "FR", "availableLanguage": "French"}}</script>
 </head>
-<body>
+<body class="browse">
 
 <header id="header">
   <div class="wrap nav">
@@ -263,40 +283,37 @@ body.browse .pd-adv .adv p{color:var(--steel-d)}
     <div class="crumbs"><a href="index.html">Accueil</a><span>/</span><span id="crumbCat">Catalogue</span></div>
     <span class="eyebrow rv">Le catalogue</span>
     <h1 class="rv rv-d1">Du matériel lourd,<br>au prix léger.</h1>
-    <p class="lead rv rv-d2">Six familles d'équipements industriels, importées en direct des usines chinoises auditées par nos soins. Choisissez une catégorie pour découvrir les produits.</p>
+    <p class="lead rv rv-d2">Tous nos équipements industriels, importés en direct des usines chinoises auditées. Filtrez par catégorie ou cherchez directement le produit qu'il vous faut.</p>
   </div>
 </section>
 
 <section class="section">
   <div class="wrap">
-
-    <!-- INDEX DES CATÉGORIES -->
-    <div class="cat-view-index" id="catIndex">
-      <div class="cat-index" id="catGrid"><!-- injecté en JS --></div>
-    </div>
-
-    <!-- VUE PRODUITS -->
-    <div class="products-view" id="productsView">
-      <a class="back-link" id="backLink" href="#"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M2 8h11M9 3.5L13.5 8 9 12.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>Toutes les catégories</a>
-      <div class="pv-head">
-        <div class="ico" id="pvIco"></div>
-        <div><h2 id="pvTitle"></h2><p id="pvDesc"></p></div>
+    <div class="shop-bar">
+      <div class="shop-search">
+        <svg viewBox="0 0 20 20" fill="none"><circle cx="9" cy="9" r="6" stroke="currentColor" stroke-width="1.7"/><path d="M13.5 13.5l4 4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+        <input id="shopSearch" type="search" placeholder="Rechercher : nacelle, spa, soudage laser…" aria-label="Rechercher un produit">
       </div>
-      <div class="prod-grid" id="prodGrid"></div>
-      <div class="pv-foot">
-        <p><strong>Vous ne trouvez pas exactement ce qu'il vous faut ?</strong> On source n'importe quel équipement industriel à la demande : identification de l'usine, négociation, audit et import complet.</p>
-        <a href="mailto:contact@direct-china.fr?subject=Demande%20de%20sourcing" class="btn btn-primary">Demander un sourcing
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 8h11M9 3.5L13.5 8 9 12.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </a>
-      </div>
+      <select id="shopSort" class="shop-sort" aria-label="Trier les produits">
+        <option value="default">Trier : pertinence</option>
+        <option value="price-asc">Prix croissant</option>
+        <option value="price-desc">Prix décroissant</option>
+        <option value="name">Nom A → Z</option>
+      </select>
     </div>
-
-    <!-- VUE PRODUIT (détail) -->
-    <div class="products-view" id="detailView">
-      <a class="back-link" id="detailBack" href="#"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M2 8h11M9 3.5L13.5 8 9 12.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span id="detailBackLabel">Retour</span></a>
-      <div id="detailBody"></div>
+    <div class="shop-chips" id="shopChips"></div>
+    <div class="shop-meta"><span id="shopCount"></span><a class="shop-cat-link" id="shopCatLink" hidden></a></div>
+    <div class="prod-grid" id="shopGrid"></div>
+    <div class="shop-empty" id="shopEmpty" hidden>
+      <p>Aucun produit ne correspond à votre recherche.</p>
+      <button class="btn btn-ghost" id="shopReset">Réinitialiser les filtres</button>
     </div>
-
+    <div class="pv-foot">
+      <p><strong>Vous ne trouvez pas exactement ce qu'il vous faut ?</strong> On source n'importe quel équipement industriel à la demande : identification de l'usine, négociation, audit et import complet.</p>
+      <a href="mailto:contact@direct-china.fr?subject=Demande%20de%20sourcing" class="btn btn-primary">Demander un sourcing
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 8h11M9 3.5L13.5 8 9 12.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+    </div>
   </div>
 </section>
 
@@ -397,10 +414,6 @@ const FALLBACK = [
 let CATS = FALLBACK;
 const arrow = '<svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M2 8h11M9 3.5L13.5 8 9 12.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 
-const idx = document.getElementById('catIndex');
-const view = document.getElementById('productsView');
-const crumb = document.getElementById('crumbCat');
-const detail = document.getElementById('detailView');
 
 const CUR = {EUR:'€',USD:'$',GBP:'£',CNY:'¥'};
 function fmtPrice(p){
@@ -449,41 +462,42 @@ document.addEventListener('click', e=>{
   const im=box.querySelector('img'); if(im) im.src=imgs[idx];
   box.querySelectorAll('.pa-dots i').forEach((d,k)=>d.classList.toggle('on',k===idx));
 });
-function setView(which){
-  idx.classList.toggle('hidden', which!=='index');
-  view.classList.toggle('active', which==='category');
-  detail.classList.toggle('active', which==='product');
-  document.body.classList.toggle('browse', which!=='index');
-  document.body.classList.toggle('product', which==='product');
-  window.scrollTo({top:0,behavior:'smooth'});
+function findProduct(id){
+  for(const c of CATS){ const p=(c.products||[]).find(x=>x.id===id); if(p) return {p,c}; }
+  return null;
 }
 
-function renderIndex(){
-  document.getElementById('catGrid').innerHTML = CATS.map((c,i)=>`
-  <article class="tile cat-tile rv ${i%3===1?'rv-d1':i%3===2?'rv-d2':''}" data-cat="${c.id}" data-tilt>
-    <span class="num">${c.num||''}</span>
-    <div>
-      <div class="ico">${ICONS[c.icon]||''}</div>
-      <h3>${c.title}</h3>
-      <p>${c.short||''}</p>
-    </div>
-    <span class="count">${c.products.length} produit${c.products.length>1?'s':''} ${arrow}</span>
-  </article>`).join('');
-  document.getElementById('footCats').innerHTML = CATS.map(c=>`<li><a href="/categorie/${c.id}">${c.title}</a></li>`).join('');
-  bindTilt();
-  requestAnimationFrame(()=>document.querySelectorAll('#catGrid .rv').forEach(e=>e.classList.add('in')));
+/* ============ BOUTIQUE : tous les produits, filtres ============ */
+let ALL=[], shopState={cat:'all',q:'',sort:'default'};
+const norm=s=>(s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+function buildAll(){
+  ALL=[];
+  CATS.forEach(c=>(c.products||[]).forEach(p=>{ ALL.push({...p, cat:c.id, catName:c.title, catIcon:c.icon}); }));
 }
-
-function showCategory(id){
-  const c = CATS.find(x=>x.id===id); if(!c) return showIndex();
-  document.getElementById('pvIco').innerHTML = ICONS[c.icon]||'';
-  document.getElementById('pvTitle').textContent = c.title;
-  document.getElementById('pvDesc').textContent = c.desc||'';
-  document.getElementById('prodGrid').innerHTML = c.products.map(p=>{
-    return `
+function renderChips(){
+  document.getElementById('shopChips').innerHTML =
+    `<button class="chip ${shopState.cat==='all'?'on':''}" data-cat="all">Tout (${ALL.length})</button>`
+    + CATS.map(c=>`<button class="chip ${shopState.cat===c.id?'on':''}" data-cat="${c.id}">${c.title}</button>`).join('');
+}
+function priceVal(p){ return hasPrice(p)?Number(p.price):null; }
+function applyShop(){
+  let list=ALL.slice();
+  if(shopState.cat!=='all') list=list.filter(p=>p.cat===shopState.cat);
+  if(shopState.q){ const q=norm(shopState.q); list=list.filter(p=>norm(p.n+' '+(p.s||'')+' '+p.catName).includes(q)); }
+  const s=shopState.sort;
+  if(s==='name') list.sort((a,b)=>a.n.localeCompare(b.n,'fr'));
+  else if(s==='price-asc'||s==='price-desc') list.sort((a,b)=>{
+    const pa=priceVal(a), pb=priceVal(b);
+    if(pa==null&&pb==null) return 0;
+    if(pa==null) return 1; if(pb==null) return -1;
+    return s==='price-asc'?pa-pb:pb-pa;
+  });
+  const grid=document.getElementById('shopGrid'), empty=document.getElementById('shopEmpty');
+  grid.innerHTML = list.map(p=>`
     <article class="prod">
-      ${cardMedia(p, c.icon)}
+      ${cardMedia(p, p.catIcon)}
       <div class="prod-body">
+        <span class="prod-cat-tag">${p.catName}</span>
         <h3>${p.n}</h3>
         <p class="spec">${p.s||''}</p>
         <div class="prod-foot">
@@ -491,160 +505,32 @@ function showCategory(id){
           <a href="/produit/${p.slug}" class="prod-cta">Voir le produit</a>
         </div>
       </div>
-    </article>`;}).join('');
-  crumb.innerHTML = `<a href="/catalogue" style="color:var(--steel-d)">Catalogue</a> <span style="margin:0 6px">/</span> ${c.title}`;
-  setView('category');
+    </article>`).join('');
+  grid.style.display = list.length? '' : 'none';
+  empty.hidden = list.length>0;
+  document.getElementById('shopCount').textContent = `${list.length} produit${list.length>1?'s':''}`;
+  const link=document.getElementById('shopCatLink');
+  if(shopState.cat!=='all'){ const c=CATS.find(x=>x.id===shopState.cat); link.hidden=false; link.href='/categorie/'+shopState.cat; link.textContent='Voir la page '+(c?c.title:'')+' \u2192'; }
+  else link.hidden=true;
 }
-function showIndex(){
-  crumb.textContent = 'Catalogue';
-  setView('index');
-  history.replaceState(null,'','/catalogue');
-}
-
-function findProduct(id){
-  for(const c of CATS){ const p=(c.products||[]).find(x=>x.id===id); if(p) return {p,c}; }
-  return null;
-}
-function showProduct(id){
-  const hit = findProduct(id); if(!hit) return showIndex();
-  const {p,c} = hit;
-  const imgs = p.images||[];
-  const main = imgs.length
-    ? `<img id="pdMainImg" src="${imgs[0]}" alt="${esc(p.n)}">`
-    : `<div class="ico">${ICONS[c.icon]||''}</div>`;
-  const navArrows = imgs.length>1 ? `
-        <button class="pd-arrow pd-prev" id="pdPrev" aria-label="Photo précédente"><svg viewBox="0 0 16 16" fill="none" style="transform:rotate(180deg)"><path d="M2 8h11M9 3.5L13.5 8 9 12.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-        <button class="pd-arrow pd-next" id="pdNext" aria-label="Photo suivante"><svg viewBox="0 0 16 16" fill="none"><path d="M2 8h11M9 3.5L13.5 8 9 12.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-        <span class="pd-count" id="pdCount">1 / ${imgs.length}</span>` : '';
-  const thumbs = imgs.length>1
-    ? `<div class="pd-thumbs">${imgs.map((u,i)=>`<div class="pd-thumb${i===0?' active':''}" data-i="${i}"><img src="${u}" alt=""></div>`).join('')}</div>` : '';
-  const st = stockInfo(p);
-  const stockHtml = st ? `<span class="pd-stock ${st.cls}">${st.txt}</span>` : '';
-  const subject = encodeURIComponent('Devis — '+p.n);
-  const priced = hasPrice(p);
-  const buyBox = priced ? `
-        <div class="pd-buy">
-          <div class="qty">
-            <button type="button" id="qMinus" aria-label="Diminuer">−</button>
-            <input id="qInput" type="number" min="1" value="1" inputmode="numeric">
-            <button type="button" id="qPlus" aria-label="Augmenter">+</button>
-          </div>
-          <button class="btn btn-primary" id="addCart" style="flex:1;min-width:170px;justify-content:center">Ajouter au panier</button>
-        </div>
-        <div class="pd-cta2">
-          <a class="btn btn-ghost" href="mailto:contact@direct-china.fr?subject=${subject}">Demander un devis</a>
-          <a class="btn btn-ghost" href="#${c.id}">Voir la catégorie</a>
-        </div>` : `
-        <div class="pd-cta2">
-          <a class="btn btn-primary" href="mailto:contact@direct-china.fr?subject=${subject}">Demander un devis
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 8h11M9 3.5L13.5 8 9 12.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </a>
-          <a class="btn btn-ghost" href="#${c.id}">Voir la catégorie</a>
-        </div>`;
-  const secure = `<div class="pd-secure"><svg viewBox="0 0 24 24" fill="none"><path d="M12 2l8 4v6c0 5-3.5 8-8 10-4.5-2-8-5-8-10V6l8-4z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M9 12l2 2 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span><b>Paiement sécurisé.</b> Acompte 50 % à la commande, solde avant livraison · données chiffrées.</span></div>`;
-  const advantages = `
-    <div class="pd-adv">
-      <div class="adv"><svg viewBox="0 0 24 24" fill="none"><path d="M3 12l9-9 9 9-9 9-9-9z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M9 12l2 2 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><b>Prix direct usine</b><p>Jusqu'à −40 % vs le circuit France classique.</p></div>
-      <div class="adv"><svg viewBox="0 0 24 24" fill="none"><path d="M3 7l9-4 9 4-9 4-9-4z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M3 7v10l9 4 9-4V7" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M12 11v10" stroke="currentColor" stroke-width="1.6"/></svg><b>Import géré de A à Z</b><p>Production, fret maritime, douane et livraison.</p></div>
-      <div class="adv"><svg viewBox="0 0 24 24" fill="none"><path d="M12 2l8 4v6c0 5-3.5 8-8 10-4.5-2-8-5-8-10V6l8-4z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M9 12l2 2 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><b>Contrôle qualité</b><p>Inspection en usine, validée par vos soins avant expédition.</p></div>
-      <div class="adv"><svg viewBox="0 0 24 24" fill="none"><path d="M2 17h13l3-5h-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 17V7h9v10" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><circle cx="7" cy="20" r="1.7" stroke="currentColor" stroke-width="1.6"/><circle cx="16" cy="20" r="1.7" stroke="currentColor" stroke-width="1.6"/></svg><b>Livré dédouané</b><p>DDP, partout en France. Aucune surprise à l'arrivée.</p></div>
-    </div>`;
-
-  // produits de la même catégorie
-  const others = (c.products||[]).filter(x=>x.id!==p.id).slice(0,4);
-  const related = others.length ? `
-    <div class="pd-related">
-      <h2>Nos autres produits</h2>
-      <p class="sub">Dans la catégorie ${c.title}</p>
-      <div class="pd-related-grid">
-        ${others.map(o=>{
-          return `<article class="prod">
-            ${cardMedia(o, c.icon)}
-            <div class="prod-body">
-              <h3>${esc(o.n)}</h3>
-              <p class="spec">${esc(o.s||'')}</p>
-              <div class="prod-foot">
-                <div class="prod-price">Prix<b>${fmtPrice(o)}</b></div>
-                <a href="/produit/${o.slug}" class="prod-cta">Voir le produit</a>
-              </div>
-            </div>
-          </article>`;
-        }).join('')}
-      </div>
-    </div>` : '';
-
-  document.getElementById('detailBackLabel').textContent = 'Retour à '+c.title;
-  document.getElementById('detailBack').setAttribute('href', '#'+c.id);
-  document.getElementById('detailBody').innerHTML = `
-    <div class="pd-grid">
-      <div class="pd-left">
-        <div class="pd-main">${main}${navArrows}</div>
-        ${thumbs}
-      </div>
-      <div class="pd-info">
-        <div class="eyebrow">${c.title}</div>
-        <h1>${esc(p.n)}</h1>
-        <div class="pd-price-row">
-          <div class="pd-price">${fmtPrice(p)}</div>
-          ${stockHtml}
-        </div>
-        <div class="pd-desc">${descHtml(p.desc)}</div>
-        ${buyBox}
-        ${secure}
-        <div class="pd-meta">
-          <div>Catégorie<b>${c.title}</b></div>
-          <div>Import<b>Direct usine · DDP France</b></div>
-          <div>Paiement<b>50 % / 50 %</b></div>
-        </div>
-      </div>
-    </div>
-    ${advantages}
-    ${related}`;
-
-  // galerie : flèches + vignettes
-  let gi = 0;
-  function setImg(i){
-    if(!imgs.length) return;
-    gi = (i + imgs.length) % imgs.length;
-    const m=document.getElementById('pdMainImg'); if(m) m.src=imgs[gi];
-    const cnt=document.getElementById('pdCount'); if(cnt) cnt.textContent=(gi+1)+' / '+imgs.length;
-    document.querySelectorAll('#detailBody .pd-thumb').forEach((x,k)=>x.classList.toggle('active',k===gi));
-  }
-  const prev=document.getElementById('pdPrev'), next=document.getElementById('pdNext');
-  if(prev) prev.addEventListener('click',()=>setImg(gi-1));
-  if(next) next.addEventListener('click',()=>setImg(gi+1));
-  document.querySelectorAll('#detailBody .pd-thumb').forEach(t=>t.addEventListener('click',()=>setImg(parseInt(t.dataset.i,10))));
-
-  // achat : quantité + ajout au panier
-  if(priced){
-    const qIn=document.getElementById('qInput');
-    const readQ=()=>Math.max(1,parseInt(qIn.value,10)||1);
-    document.getElementById('qMinus').addEventListener('click',()=>{ qIn.value=Math.max(1,readQ()-1); });
-    document.getElementById('qPlus').addEventListener('click',()=>{ qIn.value=readQ()+1; });
-    qIn.addEventListener('change',()=>{ qIn.value=readQ(); });
-    document.getElementById('addCart').addEventListener('click',()=>{
-      cartAdd({id:p.id, n:p.n, price:Number(p.price), currency:p.currency||'EUR', image:(p.images&&p.images[0])||''}, readQ());
-      openCart();
-    });
-  }
-
-  crumb.innerHTML = `<a href="/catalogue" style="color:var(--steel-d)">Catalogue</a> <span style="margin:0 6px">/</span> <a href="#${c.id}" style="color:var(--steel-d)">${c.title}</a> <span style="margin:0 6px">/</span> ${esc(p.n)}`;
-  setView('product');
+function initShop(){
+  buildAll();
+  document.body.classList.add('browse');
+  document.getElementById('footCats').innerHTML = CATS.map(c=>`<li><a href="/categorie/${c.id}">${c.title}</a></li>`).join('');
+  const pre=(location.hash||'').replace('#','') || new URLSearchParams(location.search).get('cat');
+  if(pre && CATS.some(c=>c.id===pre)) shopState.cat=pre;
+  renderChips(); applyShop();
+  document.getElementById('shopChips').addEventListener('click',e=>{
+    const b=e.target.closest('.chip'); if(!b) return;
+    shopState.cat=b.dataset.cat; renderChips(); applyShop();
+  });
+  let t; const si=document.getElementById('shopSearch');
+  si.addEventListener('input',()=>{ clearTimeout(t); t=setTimeout(()=>{ shopState.q=si.value; applyShop(); },120); });
+  document.getElementById('shopSort').addEventListener('change',e=>{ shopState.sort=e.target.value; applyShop(); });
+  const reset=document.getElementById('shopReset');
+  if(reset) reset.addEventListener('click',()=>{ shopState={cat:'all',q:'',sort:'default'}; si.value=''; document.getElementById('shopSort').value='default'; renderChips(); applyShop(); });
 }
 
-document.getElementById('catGrid').addEventListener('click', e=>{
-  const t = e.target.closest('[data-cat]'); if(!t) return;
-  location.hash = t.dataset.cat;
-});
-document.getElementById('backLink').addEventListener('click', e=>{ e.preventDefault(); location.hash=''; });
-document.getElementById('footCats').addEventListener('click', ()=>setTimeout(routeFromHash,0));
-
-function routeFromHash(){
-  const h = location.hash.replace(/^#/,'');
-  if(h.indexOf('p/')===0){ showProduct(h.slice(2)); return; }
-  if(h && CATS.find(c=>c.id===h)) showCategory(h); else showIndex();
-}
-window.addEventListener('hashchange', routeFromHash);
 
 /* tilt 3D léger sur les cartes catégories (desktop) */
 function bindTilt(){
@@ -685,8 +571,7 @@ async function initCatalogue(){
     priceMode:p.priceMode||'quote', price:(p.price!=null?p.price:null),
     currency:p.currency||'EUR', priceLabel:p.priceLabel||'', stock:(p.stock!=null?p.stock:null)
   }))}));
-  renderIndex();
-  routeFromHash();
+  initShop();
 }
 /* ============ PANIER (localStorage) ============ */
 function hasPrice(p){ return p.priceMode==='fixed' && p.price!=null && p.price!=='' && isFinite(Number(p.price)); }
