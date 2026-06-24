@@ -96,6 +96,7 @@ header.scrolled{
   border-bottom-color:var(--line);
 }
 .nav{display:flex;align-items:center;justify-content:space-between;height:72px}
+.nav-actions{display:flex;align-items:center;gap:12px}
 .logo{display:flex;align-items:center;gap:11px;font-weight:900;font-size:17px;letter-spacing:.02em;font-variation-settings:'wdth' 115}
 .logo-mark{width:34px;height:34px;flex:none}
 .logo span em{font-style:normal;color:var(--yellow)}
@@ -234,7 +235,7 @@ header.scrolled{
 /* ====== TICKER ====== */
 .ticker{
   border-top:1px solid var(--line);border-bottom:1px solid var(--line);
-  background:var(--ink-2);overflow:hidden;padding:16px 0;position:relative;z-index:2;
+  background:var(--ink-2);overflow:hidden;padding:16px 0;position:relative;z-index:2;margin-top:38px;
 }
 .ticker-track{display:flex;gap:0;width:max-content;animation:scrollx 36s linear infinite;will-change:transform}
 .ticker:hover .ticker-track{animation-play-state:paused}
@@ -487,8 +488,8 @@ footer{background:#070C16;border-top:1px solid var(--line);padding:64px 0 36px}
 }
 
 /* ====== EXPERT PHOTOS ====== */
-.expert-photo{margin:-38px -34px 28px;height:320px;overflow:hidden;position:relative;background:var(--ink)}
-.expert-photo img{width:100%;height:100%;object-fit:cover;object-position:50% 16%;transition:transform .9s var(--ease);filter:saturate(.94)}
+.expert-photo{margin:-38px -34px 28px;aspect-ratio:1/1;overflow:hidden;position:relative;background:var(--ink)}
+.expert-photo img{width:100%;height:100%;object-fit:cover;object-position:50% 25%;transition:transform .9s var(--ease);filter:saturate(.94)}
 .expert:hover .expert-photo img{transform:scale(1.05)}
 .expert-photo::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 55%,rgba(11,18,32,.5))}
 .expert-photo .ph-tag{
@@ -497,7 +498,7 @@ footer{background:#070C16;border-top:1px solid var(--line);padding:64px 0 36px}
   color:var(--white);background:rgba(11,18,32,.55);backdrop-filter:blur(6px);
   border:1px solid rgba(255,255,255,.18);padding:6px 11px;border-radius:7px;
 }
-@media(max-width:560px){.expert-photo{height:260px}}
+@media(max-width:560px){.expert-photo{aspect-ratio:1/1}}
 
 /* ====== PLANISPHERE (process bg) ====== */
 .process{overflow:hidden}
@@ -587,12 +588,12 @@ footer{background:#070C16;border-top:1px solid var(--line);padding:64px 0 36px}
       <a href="blog.html">Blog &amp; conseils</a>
       <a href="faq.html">FAQ</a>
     </nav>
-    <a href="mailto:contact@direct-china.fr" class="nav-cta">Demander un devis</a>
+    <div class="nav-actions"><a href="mailto:contact@direct-china.fr" class="nav-cta">Demander un devis</a>
     <a class="member-btn" href="espace-client.html" aria-label="Espace client" title="Espace client"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" stroke="currentColor" stroke-width="1.7"/><path d="M4 21c0-4 3.6-7 8-7s8 3 8 7" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></a>
     <button class="cart-btn" id="cartBtn" aria-label="Panier"><svg viewBox="0 0 24 24" fill="none"><path d="M3 4h2l2.4 12.2a1.5 1.5 0 0 0 1.5 1.2h8.2a1.5 1.5 0 0 0 1.5-1.2L21 8H6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><circle cx="9.5" cy="20" r="1.4" fill="currentColor"/><circle cx="18" cy="20" r="1.4" fill="currentColor"/></svg><span class="cart-badge" id="cartBadge">0</span></button>
     <button class="burger" id="burger" aria-label="Ouvrir le menu" aria-expanded="false">
       <span></span><span></span><span></span>
-    </button>
+    </button></div>
   </div>
 </header>
 

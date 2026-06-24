@@ -41,6 +41,17 @@
 .prod{border:1px solid var(--line);border-radius:16px;overflow:hidden;background:var(--ink-2);display:flex;flex-direction:column;transition:transform .35s var(--ease),border-color .35s,box-shadow .35s}
 .prod:hover{transform:translateY(-5px);border-color:rgba(245,179,1,.4);box-shadow:0 26px 52px -24px rgba(0,0,0,.6)}
 .prod-img{aspect-ratio:1/1;position:relative;display:flex;align-items:center;justify-content:center;background:linear-gradient(160deg,var(--ink-3),var(--ink));border-bottom:1px solid var(--line);overflow:hidden}
+.prod-img .pa{position:absolute;top:50%;width:30px;height:30px;border-radius:50%;background:rgba(11,18,32,.62);border:1px solid var(--line);color:#fff;display:flex;align-items:center;justify-content:center;z-index:3;opacity:0;transition:opacity .2s,background .2s,color .2s;transform:translateY(-50%)}
+.prod-img .pa svg{width:13px;height:13px}
+.prod-img .pa-prev{left:8px;transform:translateY(-50%) rotate(180deg)}
+.prod-img .pa-next{right:8px}
+.prod:hover .pa{opacity:1}
+.prod-img .pa:hover{background:var(--yellow);color:var(--ink);border-color:var(--yellow)}
+.prod-img .pa-dots{position:absolute;bottom:9px;left:50%;transform:translateX(-50%);display:flex;gap:5px;z-index:3}
+.prod-img .pa-dots i{width:5px;height:5px;border-radius:50%;background:rgba(140,153,173,.55);transition:background .2s}
+.prod-img .pa-dots i.on{background:var(--yellow)}
+body.browse .prod-img .pa{background:rgba(255,255,255,.85);border-color:var(--line-light);color:var(--ink)}
+@media(hover:none){.prod-img .pa{opacity:.9}}
 .prod-img::after{content:'';position:absolute;inset:0;background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:30px 30px;opacity:.4}
 .prod-img .ico{width:60px;height:60px;color:var(--yellow);opacity:.85;position:relative;z-index:1}
 .prod-tag{position:absolute;top:12px;left:12px;z-index:2;font-family:var(--font-m);font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--steel);background:rgba(11,18,32,.6);border:1px solid var(--line);padding:5px 9px;border-radius:6px}
@@ -60,9 +71,9 @@
 /* ---- vue produit (détail) ---- */
 .pd-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:46px;align-items:start;margin-top:6px}
 @media(max-width:880px){.pd-grid{grid-template-columns:1fr;gap:30px}}
-.pd-main{border:1px solid var(--line);border-radius:16px;overflow:hidden;background:linear-gradient(160deg,var(--ink-3),var(--ink));aspect-ratio:4/3;display:flex;align-items:center;justify-content:center;position:relative}
+.pd-main{border:1px solid var(--line);border-radius:16px;overflow:hidden;background:linear-gradient(160deg,var(--ink-3),var(--ink));min-height:300px;display:flex;align-items:center;justify-content:center;position:relative}
 .pd-main::after{content:'';position:absolute;inset:0;background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:34px 34px;opacity:.35;pointer-events:none}
-.pd-main img{width:100%;height:100%;object-fit:cover;position:relative;z-index:1}
+.pd-main img{width:100%;height:auto;max-height:80vh;object-fit:contain;display:block;position:relative;z-index:1}
 .pd-main .ico{width:90px;height:90px;color:var(--yellow);opacity:.8;position:relative;z-index:1}
 .pd-thumbs{display:flex;gap:10px;margin-top:12px;flex-wrap:wrap}
 .pd-thumb{width:72px;height:60px;border-radius:9px;overflow:hidden;border:1px solid var(--line);cursor:pointer;background:var(--ink-3);transition:border-color .25s,transform .25s}
@@ -85,6 +96,7 @@
 /* ---- mode navigation : fond clair pour la liste et la fiche ---- */
 body.browse .section{background:var(--paper);color:var(--ink)}
 body.product .page-hero{display:none}
+body.product #header{background:rgba(11,18,32,.88);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid var(--line)}
 body.product .section{padding-top:116px}
 body.browse .pv-head{border-bottom-color:var(--line-light)}
 body.browse .pv-head h2{color:var(--ink)}
@@ -229,10 +241,10 @@ body.browse .pd-adv .adv p{color:var(--steel-d)}
       <a href="blog.html">Blog &amp; conseils</a>
       <a href="faq.html">FAQ</a>
     </nav>
-    <a href="mailto:contact@direct-china.fr" class="nav-cta">Demander un devis</a>
+    <div class="nav-actions"><a href="mailto:contact@direct-china.fr" class="nav-cta">Demander un devis</a>
     <a class="member-btn" href="espace-client.html" aria-label="Espace client" title="Espace client"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" stroke="currentColor" stroke-width="1.7"/><path d="M4 21c0-4 3.6-7 8-7s8 3 8 7" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></a>
     <button class="cart-btn" id="cartBtn" aria-label="Voir le panier"><svg viewBox="0 0 24 24" fill="none"><path d="M3 4h2l2.4 12.2a1.5 1.5 0 0 0 1.5 1.2h8.2a1.5 1.5 0 0 0 1.5-1.2L21 8H6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><circle cx="9.5" cy="20" r="1.4" fill="currentColor"/><circle cx="18" cy="20" r="1.4" fill="currentColor"/></svg><span class="cart-badge" id="cartBadge">0</span></button>
-    <button class="burger" id="burger" aria-label="Ouvrir le menu" aria-expanded="false"><span></span><span></span><span></span></button>
+    <button class="burger" id="burger" aria-label="Ouvrir le menu" aria-expanded="false"><span></span><span></span><span></span></button></div>
   </div>
 </header>
 <div class="mobile-menu" id="mobileMenu">
@@ -407,10 +419,34 @@ function stockInfo(p){
   return p.stock>0 ? {cls:'in', txt:p.stock+' en stock'} : {cls:'out', txt:'Sur commande'};
 }
 function esc(s){return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function strongify(s){return esc(s).replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>');}
 function descHtml(d){
   if(!d) return '<p>Fiche technique complète et devis sur demande. Contactez-nous pour les spécifications détaillées.</p>';
-  return d.split(/\n{1,}/).filter(x=>x.trim()).map(x=>`<p>${esc(x.trim())}</p>`).join('');
+  return d.split(/\n{1,}/).filter(x=>x.trim()).map(x=>`<p>${strongify(x.trim())}</p>`).join('');
 }
+const PA_SVG='<svg viewBox="0 0 16 16" fill="none"><path d="M5 3l5 5-5 5" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+function cardMedia(p, iconKey){
+  const imgs=p.images||[];
+  const inner = imgs.length
+    ? `<img src="${imgs[0]}" alt="${esc(p.n)}" loading="lazy" style="width:100%;height:100%;object-fit:contain;position:relative;z-index:1;padding:14px">`
+    : `<span class="prod-tag">Photo fournisseur</span><div class="ico">${ICONS[iconKey]||''}</div>`;
+  const arrows = imgs.length>1
+    ? `<button class="pa pa-prev" aria-label="Photo précédente">${PA_SVG}</button><button class="pa pa-next" aria-label="Photo suivante">${PA_SVG}</button><span class="pa-dots">${imgs.map((_,i)=>`<i${i===0?' class="on"':''}></i>`).join('')}</span>`
+    : '';
+  return `<div class="prod-img" data-pid="${p.id}" data-idx="0">${inner}${arrows}</div>`;
+}
+/* flèches des aperçus produits (délégation globale) */
+document.addEventListener('click', e=>{
+  const a=e.target.closest('.pa-prev,.pa-next'); if(!a) return;
+  e.preventDefault(); e.stopPropagation();
+  const box=a.closest('.prod-img'); if(!box) return;
+  const hit=findProduct(box.dataset.pid); if(!hit||!hit.p.images||!hit.p.images.length) return;
+  const imgs=hit.p.images; let idx=parseInt(box.dataset.idx||'0',10);
+  idx=(idx + (a.classList.contains('pa-next')?1:-1) + imgs.length)%imgs.length;
+  box.dataset.idx=idx;
+  const im=box.querySelector('img'); if(im) im.src=imgs[idx];
+  box.querySelectorAll('.pa-dots i').forEach((d,k)=>d.classList.toggle('on',k===idx));
+});
 function setView(which){
   idx.classList.toggle('hidden', which!=='index');
   view.classList.toggle('active', which==='category');
@@ -442,12 +478,9 @@ function showCategory(id){
   document.getElementById('pvTitle').textContent = c.title;
   document.getElementById('pvDesc').textContent = c.desc||'';
   document.getElementById('prodGrid').innerHTML = c.products.map(p=>{
-    const media = (p.images && p.images.length)
-      ? `<img src="${p.images[0]}" alt="${p.n}" loading="lazy" style="width:100%;height:100%;object-fit:contain;position:relative;z-index:1;padding:14px">`
-      : `<span class="prod-tag">Photo fournisseur</span><div class="ico">${ICONS[c.icon]||''}</div>`;
     return `
     <article class="prod">
-      <div class="prod-img">${media}</div>
+      ${cardMedia(p, c.icon)}
       <div class="prod-body">
         <h3>${p.n}</h3>
         <p class="spec">${p.s||''}</p>
@@ -523,11 +556,8 @@ function showProduct(id){
       <p class="sub">Dans la catégorie ${c.title}</p>
       <div class="pd-related-grid">
         ${others.map(o=>{
-          const om = (o.images&&o.images.length)
-            ? `<img src="${o.images[0]}" alt="${esc(o.n)}" loading="lazy" style="width:100%;height:100%;object-fit:contain;position:relative;z-index:1;padding:14px">`
-            : `<span class="prod-tag">Photo fournisseur</span><div class="ico">${ICONS[c.icon]||''}</div>`;
           return `<article class="prod">
-            <div class="prod-img">${om}</div>
+            ${cardMedia(o, c.icon)}
             <div class="prod-body">
               <h3>${esc(o.n)}</h3>
               <p class="spec">${esc(o.s||'')}</p>

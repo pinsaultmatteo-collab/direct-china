@@ -31,7 +31,7 @@ Réponds UNIQUEMENT avec un objet JSON valide, sans aucun texte autour, au forma
 Contraintes :
 - "title" : nom de produit clair et commercial, en français, ~70 caractères max.
 - "summary" : UNE phrase courte et concrète pour la carte catalogue (usage + atout clé), ~120 caractères max, sans point final.
-- "description" : 2 à 4 courts paragraphes en prose (pas de listes à puces) : à quoi sert le produit, ses points forts techniques, et pourquoi l'acheter via Direct China (prix usine, import géré de A à Z). N'invente aucun prix chiffré ni aucune spécification non fournie.`;
+- "description" : 2 à 4 courts paragraphes en prose (pas de listes à puces) : à quoi sert le produit, ses points forts techniques, et pourquoi l'acheter via Direct China (prix usine, import géré de A à Z). N'invente aucun prix chiffré ni aucune spécification non fournie. Dans la description, mets en gras avec des doubles astérisques (par ex. **soudage laser 1500 W**) les 3 à 6 mots ou groupes de mots les plus importants : caractéristiques techniques clés, chiffres marquants et bénéfices décisifs. N'abuse pas du gras, et n'en mets pas dans "title" ni "summary".`;
 
   try {
     const r = await fetch('https://api.anthropic.com/v1/messages', {

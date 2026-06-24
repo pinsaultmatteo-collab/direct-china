@@ -70,9 +70,20 @@ label{display:block;font-family:var(--font-m);font-size:10.5px;letter-spacing:.1
 .badge.published{background:rgba(63,178,127,.14);color:var(--green);border:1px solid rgba(63,178,127,.35)}
 .badge.draft{background:rgba(140,153,173,.12);color:var(--steel);border:1px solid var(--line)}
 .t-actions{display:flex;gap:7px;justify-content:flex-end}
+.inline-sel{background:var(--ink-3);border:1px solid var(--line);border-radius:7px;color:var(--white);font-size:12.5px;padding:7px 8px;width:100%;font-family:var(--font-d);cursor:pointer}
+.inline-sel:focus{outline:none;border-color:var(--yellow)}
+.t-price-cell{display:flex;align-items:center;gap:5px}
+.inline-price{width:78px;background:var(--ink-3);border:1px solid var(--line);border-radius:7px;color:var(--yellow);font-family:var(--font-m);font-size:12px;padding:7px 8px;-moz-appearance:textfield}
+.inline-price:focus{outline:none;border-color:var(--yellow)}
+.inline-price::-webkit-outer-spin-button,.inline-price::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+.t-price-cell .cur{font-family:var(--font-m);font-size:12px;color:var(--steel)}
+.badge-btn{cursor:pointer;font-family:var(--font-m);font-size:10px;letter-spacing:.1em;text-transform:uppercase;padding:5px 9px;border-radius:6px;transition:filter .2s}
+.badge-btn:hover{filter:brightness(1.25)}
+.t-thumb-click,.t-info-click{cursor:pointer}
+.t-info-click:hover .t-title{color:var(--yellow)}
 @media(max-width:880px){
   .trow{grid-template-columns:52px 1fr auto;gap:12px}
-  .trow .t-cat,.trow .t-price,.trow.head{display:none}
+  .trow .t-cat,.trow .t-price,.trow.head,.trow .inline-sel,.trow .t-price-cell{display:none}
   .t-actions{grid-column:1 / -1;justify-content:flex-start;margin-top:4px}
 }
 
@@ -97,9 +108,12 @@ label{display:block;font-family:var(--font-m);font-size:10.5px;letter-spacing:.1
 /* images */
 .dropzone{border:1.5px dashed var(--line);border-radius:11px;padding:22px;text-align:center;color:var(--steel);font-size:13px;cursor:pointer;transition:border-color .2s,background .2s}
 .dropzone:hover,.dropzone.drag{border-color:var(--yellow);background:rgba(245,179,1,.05);color:var(--white)}
-.thumbs{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}
-.thumb-item{position:relative;border:1px solid var(--line);border-radius:9px;overflow:hidden;aspect-ratio:4/3;background:var(--ink-3)}
-.thumb-item img{width:100%;height:100%;object-fit:cover}
+.thumbs{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:14px}
+.thumb-item{position:relative;border:1px solid var(--line);border-radius:9px;overflow:hidden;aspect-ratio:1/1;background:var(--ink-3);cursor:grab}
+.thumb-item.dragging{opacity:.35}
+.thumb-item.drag-over{outline:2px dashed var(--yellow);outline-offset:-3px}
+.thumb-item img{width:100%;height:100%;object-fit:cover;pointer-events:none}
+.ti-grip{color:#fff;font-size:15px;line-height:1;cursor:grab;user-select:none;display:flex;align-items:center;padding:0 4px;opacity:.85}
 .thumb-item .ti-actions{position:absolute;inset:auto 0 0 0;display:flex;justify-content:space-between;padding:5px;background:linear-gradient(transparent,rgba(11,18,32,.85))}
 .ti-actions button{width:26px;height:26px;border-radius:6px;background:rgba(11,18,32,.7);border:1px solid var(--line);font-size:13px;line-height:1;color:var(--white);display:flex;align-items:center;justify-content:center;transition:background .2s}
 .ti-actions button:hover{background:var(--yellow);color:var(--ink)}
@@ -168,7 +182,7 @@ label{display:block;font-family:var(--font-m);font-size:10.5px;letter-spacing:.1
           <div class="field"><label>Titre du produit</label><input id="f_title" placeholder="Ex : Mini-nacelle araignée 12 m"></div>
           <div class="field"><label>Catégorie</label><select id="f_category"></select></div>
           <div class="field"><label>Accroche (ligne affichée sur la carte)</label><textarea id="f_summary" placeholder="Une phrase courte et concrète : usage, atout clé."></textarea></div>
-          <div class="field"><label>Description complète (page produit, à venir)</label><textarea id="f_description" style="min-height:160px" placeholder="Description détaillée, spécifications, arguments. À réécrire dans la voix Direct China."></textarea></div>
+          <div class="field"><label>Description complète (page produit)</label><textarea id="f_description" style="min-height:160px" placeholder="Description détaillée, spécifications, arguments. À réécrire dans la voix Direct China."></textarea><div style="font-size:11.5px;color:var(--steel-d);margin-top:6px">Astuce : entourez un mot de <strong>**doubles astérisques**</strong> pour l'afficher en gras sur la fiche. La réécriture IA le fait automatiquement.</div></div>
           <div class="field"><label>Lien fournisseur Alibaba (interne, jamais affiché)</label><input id="f_supplier" placeholder="https://www.alibaba.com/product-detail/..."></div>
           <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:-6px">
             <button class="btn btn-ghost btn-sm" id="importBtn" type="button">⤓ Pré-remplir depuis ce lien</button>
@@ -283,17 +297,35 @@ function renderList(){
   const tbl=el('div',{class:'tbl'});
   tbl.append(el('div',{class:'trow head'},el('span',{},'Photo'),el('span',{},'Produit'),el('span',{class:'t-cat'},'Catégorie'),el('span',{class:'t-price'},'Prix'),el('span',{},'Statut'),el('span',{})));
   rows.forEach(p=>{
-    const thumb=el('div',{class:'thumb'});
+    const thumb=el('div',{class:'thumb t-thumb-click',title:'Modifier'});
     if(p.images&&p.images.length){thumb.append(el('img',{src:p.images[0],alt:''}));}else{thumb.innerHTML=placeholderSVG;}
-    const info=el('div',{},el('div',{class:'t-title'},p.title||'(sans titre)'),el('div',{class:'t-sum'},p.summary||''));
+    thumb.onclick=()=>openEditor(p);
+
+    const info=el('div',{class:'t-info-click'},el('div',{class:'t-title'},p.title||'(sans titre)'),el('div',{class:'t-sum'},p.summary||''));
+    info.onclick=()=>openEditor(p);
+
+    const catSel=el('select',{class:'inline-sel',title:'Changer la catégorie'});
+    CATS.forEach(c=>{const o=el('option',{value:c.id},c.name); if(c.id===p.category_id)o.selected=true; catSel.append(o);});
+    catSel.onchange=()=>updateField(p,{category_id:catSel.value});
+
     const sym={EUR:'€',USD:'$',GBP:'£',CNY:'¥'}[p.currency||'EUR']||'€';
-    const price = p.price_mode==='fixed'&&p.price!=null ? Number(p.price).toLocaleString('fr-FR')+' '+sym : (p.price_label||'Sur devis');
-    const badge=el('span',{class:'badge '+(p.status==='published'?'published':'draft')}, p.status==='published'?'Publié':'Brouillon');
+    const priceInp=el('input',{class:'inline-price',type:'number',min:'0',placeholder:'Sur devis',title:'Prix (laisser vide = sur devis)'});
+    if(p.price_mode==='fixed'&&p.price!=null) priceInp.value=Number(p.price);
+    priceInp.onchange=()=>{
+      const v=priceInp.value.trim();
+      if(v==='') updateField(p,{price_mode:'quote',price:null,price_label:'Sur devis'});
+      else updateField(p,{price_mode:'fixed',price:Number(v),price_label:null});
+    };
+    const priceCell=el('div',{class:'t-price-cell'},priceInp,el('span',{class:'cur'},sym));
+
+    const badge=el('button',{class:'badge badge-btn '+(p.status==='published'?'published':'draft'),title:'Cliquer pour changer le statut'}, p.status==='published'?'Publié':'Brouillon');
+    badge.onclick=()=>togglePublish(p);
+
     const actions=el('div',{class:'t-actions'});
     const edit=el('button',{class:'btn btn-ghost btn-sm'},'Modifier'); edit.onclick=()=>openEditor(p);
-    const pub=el('button',{class:'btn btn-ghost btn-sm'}, p.status==='published'?'Dépublier':'Publier'); pub.onclick=()=>togglePublish(p);
-    actions.append(edit,pub);
-    tbl.append(el('div',{class:'trow'},thumb,info,el('span',{class:'t-cat'},catName(p.category_id)),el('span',{class:'t-price'},price),badge,actions));
+    actions.append(edit);
+
+    tbl.append(el('div',{class:'trow'},thumb,info,catSel,priceCell,badge,actions));
   });
   body.append(tbl);
 }
@@ -304,6 +336,13 @@ async function togglePublish(p){
   if(error){toast(error.message,'bad');return;}
   p.status=next; renderList();
   toast(next==='published'?'Produit publié':'Produit dépublié','ok');
+}
+
+async function updateField(p, patch){
+  const { error } = await sb.from('products').update(patch).eq('id',p.id);
+  if(error){toast(error.message,'bad'); return;}
+  Object.assign(p, patch);
+  toast('Mis à jour','ok');
 }
 
 /* ---------- ÉDITEUR ---------- */
@@ -332,19 +371,24 @@ function fillEditor(){
 function showScreen(id){document.querySelectorAll('.wrap .screen').forEach(s=>{const on=(s.id===id);s.classList.toggle('active',on);s.style.display=on?'block':'none';});window.scrollTo(0,0);}
 
 /* images */
+let dragFrom=null;
 function renderThumbs(){
   const box=$('#thumbs'); box.innerHTML='';
   (current.images||[]).forEach((url,i)=>{
-    const item=el('div',{class:'thumb-item'}, el('img',{src:url,alt:''}));
+    const item=el('div',{class:'thumb-item',draggable:'true'}, el('img',{src:url,alt:'',draggable:'false'}));
     if(i===0) item.append(el('span',{class:'first-tag'},'Principale'));
     const acts=el('div',{class:'ti-actions'});
-    const left=el('button',{title:'Déplacer à gauche'},'◀'); left.onclick=()=>moveImg(i,-1);
+    const grip=el('span',{class:'ti-grip',title:'Glisser pour réordonner'},'⠿');
     const del=el('button',{title:'Supprimer'},'✕'); del.onclick=()=>removeImg(i);
-    const right=el('button',{title:'Déplacer à droite'},'▶'); right.onclick=()=>moveImg(i,1);
-    acts.append(left,del,right); item.append(acts); box.append(item);
+    acts.append(grip,del); item.append(acts);
+    item.addEventListener('dragstart',e=>{dragFrom=i;item.classList.add('dragging');e.dataTransfer.effectAllowed='move';try{e.dataTransfer.setData('text/plain',String(i));}catch(_){}});
+    item.addEventListener('dragend',()=>{item.classList.remove('dragging');box.querySelectorAll('.thumb-item').forEach(t=>t.classList.remove('drag-over'));});
+    item.addEventListener('dragover',e=>{e.preventDefault();e.dataTransfer.dropEffect='move';item.classList.add('drag-over');});
+    item.addEventListener('dragleave',()=>item.classList.remove('drag-over'));
+    item.addEventListener('drop',e=>{e.preventDefault();const to=i;if(dragFrom===null||dragFrom===to)return;const a=current.images;const [m]=a.splice(dragFrom,1);a.splice(to,0,m);dragFrom=null;renderThumbs();});
+    box.append(item);
   });
 }
-function moveImg(i,d){const a=current.images;const j=i+d;if(j<0||j>=a.length)return;[a[i],a[j]]=[a[j],a[i]];renderThumbs();}
 function removeImg(i){current.images.splice(i,1);renderThumbs();}
 
 const dz=$('#dropzone'), fi=$('#fileInput');

@@ -63,6 +63,7 @@ header.scrolled{background:rgba(11,18,32,.82);backdrop-filter:blur(16px);-webkit
 .nav-links a::after{content:'';position:absolute;left:0;bottom:-6px;width:0;height:2px;background:var(--yellow);transition:width .3s var(--ease)}
 .nav-links a:hover,.nav-links a.active{color:var(--white)}
 .nav-links a:hover::after,.nav-links a.active::after{width:100%}
+.nav-actions{display:flex;align-items:center;gap:12px}
 .nav-cta{font-size:13.5px;font-weight:700;padding:11px 22px;border-radius:9px;background:var(--yellow);color:var(--ink);transition:transform .25s var(--ease),box-shadow .25s}
 .nav-cta:hover{transform:translateY(-2px);box-shadow:0 10px 28px -8px rgba(245,179,1,.55)}
 .burger{display:none;width:42px;height:42px;flex-direction:column;align-items:center;justify-content:center;gap:5px;z-index:120}
