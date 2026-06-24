@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://direct-china.fr/sitemap.xml

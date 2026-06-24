@@ -415,6 +415,7 @@ async function handleFiles(files){
 
 /* save / delete */
 $('#saveBtn').addEventListener('click', save);
+function slugify(s){return (s||'').toString().normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/['’]/g,' ').replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'').slice(0,80)||'produit';}
 async function save(){
   current.title=$('#f_title').value.trim();
   current.category_id=$('#f_category').value||null;
@@ -430,8 +431,9 @@ async function save(){
   current.stock=(stockVal!=='')?Number(stockVal):null;
   current.price_label=$('#f_priceLabel').value.trim()||(current.price_mode==='quote'?'Sur devis':null);
   if(!current.title){toast('Le titre est obligatoire.','bad');$('#f_title').focus();return;}
+  current.slug=(current.slug&&current.slug.trim())?current.slug:slugify(current.title);
   const btn=$('#saveBtn'); btn.innerHTML='<span class="spin"></span>'; btn.disabled=true;
-  const row={id:current.id,category_id:current.category_id,title:current.title,summary:current.summary,
+  const row={id:current.id,category_id:current.category_id,title:current.title,slug:current.slug,summary:current.summary,
     description:current.description,price_mode:current.price_mode,price:current.price,currency:current.currency,
     price_label:current.price_label,stock:current.stock,
     supplier_url:current.supplier_url,images:current.images,status:current.status,

@@ -420,6 +420,7 @@ function stockInfo(p){
 }
 function esc(s){return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 function strongify(s){return esc(s).replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>');}
+function slugify(s){return (s||'').toString().normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/['’]/g,' ').replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'').slice(0,80)||'produit';}
 function descHtml(d){
   if(!d) return '<p>Fiche technique complète et devis sur demande. Contactez-nous pour les spécifications détaillées.</p>';
   return d.split(/\n{1,}/).filter(x=>x.trim()).map(x=>`<p>${strongify(x.trim())}</p>`).join('');
@@ -467,7 +468,7 @@ function renderIndex(){
     </div>
     <span class="count">${c.products.length} produit${c.products.length>1?'s':''} ${arrow}</span>
   </article>`).join('');
-  document.getElementById('footCats').innerHTML = CATS.map(c=>`<li><a href="#${c.id}">${c.title}</a></li>`).join('');
+  document.getElementById('footCats').innerHTML = CATS.map(c=>`<li><a href="/categorie/${c.id}">${c.title}</a></li>`).join('');
   bindTilt();
   requestAnimationFrame(()=>document.querySelectorAll('#catGrid .rv').forEach(e=>e.classList.add('in')));
 }
@@ -486,7 +487,7 @@ function showCategory(id){
         <p class="spec">${p.s||''}</p>
         <div class="prod-foot">
           <div class="prod-price">Prix<b>${fmtPrice(p)}</b></div>
-          <a href="#p/${p.id}" class="prod-cta">Voir le produit</a>
+          <a href="/produit/${p.slug}" class="prod-cta">Voir le produit</a>
         </div>
       </div>
     </article>`;}).join('');
@@ -563,7 +564,7 @@ function showProduct(id){
               <p class="spec">${esc(o.s||'')}</p>
               <div class="prod-foot">
                 <div class="prod-price">Prix<b>${fmtPrice(o)}</b></div>
-                <a href="#p/${o.id}" class="prod-cta">Voir le produit</a>
+                <a href="/produit/${o.slug}" class="prod-cta">Voir le produit</a>
               </div>
             </div>
           </article>`;
@@ -669,7 +670,7 @@ async function initCatalogue(){
         const mapped = cats.map(c=>({
           id:c.id, num:c.num, icon:c.icon, title:c.name, short:c.blurb, desc:c.intro,
           products:(prods||[]).filter(p=>p.category_id===c.id).map(p=>({
-            id:p.id, n:p.title, s:p.summary||'', desc:p.description||'', images:p.images||[],
+            id:p.id, n:p.title, slug:(p.slug&&p.slug.trim())?slugify(p.slug):slugify(p.title), s:p.summary||'', desc:p.description||'', images:p.images||[],
             priceMode:p.price_mode||'quote', price:(p.price!=null?Number(p.price):null),
             currency:p.currency||'EUR', priceLabel:p.price_label||'', stock:(p.stock!=null?Number(p.stock):null)
           }))
@@ -679,7 +680,7 @@ async function initCatalogue(){
     }catch(err){ /* repli silencieux sur les données par défaut */ }
   }
   CATS = CATS.map(c=>({...c, products:(c.products||[]).map((p,i)=>({
-    id:p.id||(c.id+'-'+i), n:p.n, s:p.s||'', desc:p.desc||'', images:p.images||[],
+    id:p.id||(c.id+'-'+i), n:p.n, slug:p.slug||slugify(p.n), s:p.s||'', desc:p.desc||'', images:p.images||[],
     priceMode:p.priceMode||'quote', price:(p.price!=null?p.price:null),
     currency:p.currency||'EUR', priceLabel:p.priceLabel||'', stock:(p.stock!=null?p.stock:null)
   }))}));

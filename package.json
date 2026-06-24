@@ -1,0 +1,9 @@
+{
+  "name": "direct-china",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Site Direct China — génération des pages SEO produit/catégorie au build.",
+  "scripts": {
+    "build": "node scripts/build-pages.js"
+  }
+}
