@@ -178,9 +178,9 @@ body.browse .pd-adv .adv b{color:var(--ink)}
 body.browse .pd-adv .adv p{color:var(--steel-d)}
 
 /* icône panier + badge dans le header */
-.cart-btn{position:relative;width:42px;height:42px;border-radius:10px;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;color:var(--white);transition:border-color .2s,background .2s;flex:none}
-.cart-btn:hover{border-color:var(--yellow);background:rgba(245,179,1,.08)}
-.cart-btn svg{width:20px;height:20px}
+.cart-btn,.member-btn{position:relative;width:42px;height:42px;border-radius:10px;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;color:var(--white);transition:border-color .2s,background .2s;flex:none}
+.cart-btn:hover,.member-btn:hover{border-color:var(--yellow);background:rgba(245,179,1,.08)}
+.cart-btn svg,.member-btn svg{width:20px;height:20px}
 .cart-badge{position:absolute;top:-7px;right:-7px;min-width:19px;height:19px;padding:0 5px;border-radius:10px;background:var(--yellow);color:var(--ink);font-size:11px;font-weight:800;display:none;align-items:center;justify-content:center}
 .cart-badge.show{display:flex}
 
@@ -230,6 +230,7 @@ body.browse .pd-adv .adv p{color:var(--steel-d)}
       <a href="faq.html">FAQ</a>
     </nav>
     <a href="mailto:contact@direct-china.fr" class="nav-cta">Demander un devis</a>
+    <a class="member-btn" href="espace-client.html" aria-label="Espace client" title="Espace client"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" stroke="currentColor" stroke-width="1.7"/><path d="M4 21c0-4 3.6-7 8-7s8 3 8 7" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></a>
     <button class="cart-btn" id="cartBtn" aria-label="Voir le panier"><svg viewBox="0 0 24 24" fill="none"><path d="M3 4h2l2.4 12.2a1.5 1.5 0 0 0 1.5 1.2h8.2a1.5 1.5 0 0 0 1.5-1.2L21 8H6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><circle cx="9.5" cy="20" r="1.4" fill="currentColor"/><circle cx="18" cy="20" r="1.4" fill="currentColor"/></svg><span class="cart-badge" id="cartBadge">0</span></button>
     <button class="burger" id="burger" aria-label="Ouvrir le menu" aria-expanded="false"><span></span><span></span><span></span></button>
   </div>

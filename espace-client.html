@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Espace client — Direct China</title>
+<meta name="description" content="Espace client Direct China : suivez vos commandes, retrouvez vos factures et l'avancement de vos imports.">
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..125,300..900&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<style>
+.login-grid{display:grid;grid-template-columns:1fr 1fr;gap:54px;align-items:center;margin-top:10px}
+@media(max-width:880px){.login-grid{grid-template-columns:1fr;gap:36px}}
+.login-card{border:1px solid var(--line);border-radius:18px;background:linear-gradient(165deg,var(--ink-3),var(--ink-2));padding:36px 34px;max-width:440px}
+.login-card h2{font-size:22px;margin-bottom:6px}
+.login-card .sub{font-size:14px;color:var(--steel);margin-bottom:26px}
+.field{margin-bottom:16px}
+.field label{display:block;font-family:var(--font-m);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--steel-d);margin-bottom:7px}
+.field input{width:100%;background:var(--ink-3);border:1px solid var(--line);border-radius:9px;padding:12px 13px;color:var(--white);font-family:var(--font-d);font-size:14.5px;transition:border-color .2s}
+.field input:focus{outline:none;border-color:var(--yellow)}
+.login-row{display:flex;justify-content:space-between;align-items:center;margin:6px 0 22px;font-size:12.5px}
+.login-row a{color:var(--steel)}.login-row a:hover{color:var(--yellow)}
+.login-msg{margin-top:16px;font-size:13px;color:var(--yellow);min-height:18px}
+.login-alt{margin-top:22px;padding-top:20px;border-top:1px solid var(--line);font-size:13.5px;color:var(--steel)}
+.login-alt a{color:var(--yellow);font-weight:600}
+.soon{display:inline-flex;align-items:center;gap:8px;font-family:var(--font-m);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--yellow);border:1px solid rgba(245,179,1,.35);background:rgba(245,179,1,.06);padding:6px 11px;border-radius:7px;margin-bottom:20px}
+.feats{display:flex;flex-direction:column;gap:18px}
+.feat{display:flex;gap:16px;align-items:flex-start}
+.feat .ico{width:44px;height:44px;flex:none;border:1px solid var(--line);border-radius:11px;display:flex;align-items:center;justify-content:center;color:var(--yellow)}
+.feat .ico svg{width:22px;height:22px}
+.feat h3{font-size:16.5px;font-weight:800;margin-bottom:4px;font-variation-settings:'wdth' 106}
+.feat p{font-size:14px;color:var(--steel)}
+</style>
+</head>
+<body>
+
+<header id="header">
+  <div class="wrap nav">
+    <a href="index.html" class="logo"><svg class="logo-mark" viewBox="0 0 40 40" fill="none"><rect x="3" y="12" width="34" height="20" rx="2.5" stroke="#F5B301" stroke-width="2.4"/><line x1="10" y1="12" x2="10" y2="32" stroke="#F5B301" stroke-width="2"/><line x1="17" y1="12" x2="17" y2="32" stroke="#F5B301" stroke-width="2"/><line x1="24" y1="12" x2="24" y2="32" stroke="#F5B301" stroke-width="2"/><line x1="31" y1="12" x2="31" y2="32" stroke="#F5B301" stroke-width="2"/><path d="M6 8 L20 2 L34 8" stroke="#FAFBFD" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>DIRECT<em>CHINA</em></span></a>
+    <nav class="nav-links"><a href="catalogue.html">Catalogue</a><a href="comment-ca-marche.html">Comment ça marche</a><a href="qui-sommes-nous.html">Qui sommes-nous</a><a href="blog.html">Blog &amp; conseils</a><a href="faq.html">FAQ</a></nav>
+    <a href="mailto:contact@direct-china.fr" class="nav-cta">Demander un devis</a>
+    <a class="member-btn" href="espace-client.html" aria-label="Espace client" title="Espace client"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" stroke="currentColor" stroke-width="1.7"/><path d="M4 21c0-4 3.6-7 8-7s8 3 8 7" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></a>
+    <button class="cart-btn" id="cartBtn" aria-label="Panier"><svg viewBox="0 0 24 24" fill="none"><path d="M3 4h2l2.4 12.2a1.5 1.5 0 0 0 1.5 1.2h8.2a1.5 1.5 0 0 0 1.5-1.2L21 8H6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><circle cx="9.5" cy="20" r="1.4" fill="currentColor"/><circle cx="18" cy="20" r="1.4" fill="currentColor"/></svg><span class="cart-badge" id="cartBadge">0</span></button>
+    <button class="burger" id="burger" aria-label="Ouvrir le menu" aria-expanded="false"><span></span><span></span><span></span></button>
+  </div>
+</header>
+<div class="mobile-menu" id="mobileMenu"><a href="catalogue.html">Catalogue</a><a href="comment-ca-marche.html">Comment ça marche</a><a href="qui-sommes-nous.html">Qui sommes-nous</a><a href="blog.html">Blog &amp; conseils</a><a href="faq.html">FAQ</a><a href="espace-client.html"><em>Espace client</em></a></div>
+
+<section class="page-hero">
+  <div class="page-hero-grid" aria-hidden="true"></div>
+  <div class="wrap">
+    <div class="crumbs"><a href="index.html">Accueil</a><span>/</span><span>Espace client</span></div>
+    <span class="eyebrow rv">Espace client</span>
+    <h1 class="rv rv-d1">Votre espace,<br>vos commandes.</h1>
+    <p class="lead rv rv-d2">Connectez-vous pour suivre l'avancement de vos imports, retrouver vos factures et l'historique de vos commandes.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap">
+    <div class="login-grid">
+      <div class="login-card rv">
+        <span class="soon">● Bientôt disponible</span>
+        <h2>Connexion</h2>
+        <p class="sub">L'espace client arrive très prochainement. Laissez-nous vos identifiants souhaités ou contactez-nous en attendant.</p>
+        <div class="field"><label>E-mail</label><input type="email" id="cEmail" autocomplete="username" placeholder="vous@entreprise.fr"></div>
+        <div class="field"><label>Mot de passe</label><input type="password" id="cPass" autocomplete="current-password" placeholder="••••••••"></div>
+        <div class="login-row"><label style="display:flex;align-items:center;gap:7px;text-transform:none;font-family:var(--font-d);letter-spacing:0;color:var(--steel);margin:0"><input type="checkbox" style="width:auto"> Se souvenir de moi</label><a href="mailto:contact@direct-china.fr?subject=Mot%20de%20passe%20oubli%C3%A9">Mot de passe oublié&nbsp;?</a></div>
+        <button class="btn btn-primary" id="cLogin" style="width:100%;justify-content:center">Se connecter</button>
+        <div class="login-msg" id="cMsg"></div>
+        <div class="login-alt">Pas encore de compte&nbsp;? <a href="mailto:contact@direct-china.fr?subject=Cr%C3%A9ation%20de%20compte%20client">Demandez votre accès</a></div>
+      </div>
+
+      <div class="rv rv-d1">
+        <span class="eyebrow">Ce que vous y trouverez</span>
+        <h2 style="font-size:clamp(24px,3vw,34px);margin:14px 0 26px">Tout votre import,<br>au même endroit.</h2>
+        <div class="feats">
+          <div class="feat"><div class="ico"><svg viewBox="0 0 24 24" fill="none"><path d="M6 3h9l5 5v13H6z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M15 3v5h5M9 13h6M9 17h6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></div><div><h3>Vos factures</h3><p>Téléchargez vos factures et justificatifs à tout moment, prêts pour votre comptabilité.</p></div></div>
+          <div class="feat"><div class="ico"><svg viewBox="0 0 24 24" fill="none"><path d="M2 17h13l3-5h-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 17V7h9v10" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><circle cx="7" cy="20" r="1.7" stroke="currentColor" stroke-width="1.6"/><circle cx="16" cy="20" r="1.7" stroke="currentColor" stroke-width="1.6"/></svg></div><div><h3>Le suivi de commande</h3><p>De la production en usine à la livraison dédouanée : visualisez chaque étape en temps réel.</p></div></div>
+          <div class="feat"><div class="ico"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.6"/><path d="M12 7v5l3 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><h3>Votre historique</h3><p>Retrouvez toutes vos commandes passées et recommandez en quelques clics.</p></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div><a href="index.html" class="logo"><svg class="logo-mark" viewBox="0 0 40 40" fill="none"><rect x="3" y="12" width="34" height="20" rx="2.5" stroke="#F5B301" stroke-width="2.4"/><line x1="10" y1="12" x2="10" y2="32" stroke="#F5B301" stroke-width="2"/><line x1="17" y1="12" x2="17" y2="32" stroke="#F5B301" stroke-width="2"/><line x1="24" y1="12" x2="24" y2="32" stroke="#F5B301" stroke-width="2"/><line x1="31" y1="12" x2="31" y2="32" stroke="#F5B301" stroke-width="2"/><path d="M6 8 L20 2 L34 8" stroke="#FAFBFD" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>DIRECT<em>CHINA</em></span></a><p>Import de matériel industriel en direct des usines chinoises. Prix fabricant, import géré de A à Z, livraison partout en France.</p></div>
+      <div><h4>Catalogue</h4><ul><li><a href="catalogue.html#habitat">Maisons capsules</a></li><li><a href="catalogue.html#levage">Levage &amp; élévation</a></li><li><a href="catalogue.html#precision">Soudage laser</a></li><li><a href="catalogue.html#nautisme">Nautisme &amp; spas</a></li><li><a href="catalogue.html#verts">Motoculture</a></li></ul></div>
+      <div><h4>Direct China</h4><ul><li><a href="comment-ca-marche.html">Comment ça marche</a></li><li><a href="qui-sommes-nous.html">Qui sommes-nous</a></li><li><a href="blog.html">Blog &amp; conseils</a></li><li><a href="faq.html">FAQ</a></li></ul></div>
+      <div><h4>Contact</h4><ul><li><a href="mailto:contact@direct-china.fr">contact@direct-china.fr</a></li><li><a href="espace-client.html">Espace client</a></li><li><a href="#">Mentions légales</a></li><li><a href="#">CGV</a></li></ul></div>
+    </div>
+    <div class="foot-bottom"><span>© 2026 DIRECT CHINA — TOUS DROITS RÉSERVÉS</span><span>TOULOUSE, FRANCE · 43.60°N 1.44°E</span></div>
+  </div>
+</footer>
+
+<script src="shared.js"></script>
+<script src="cart.js"></script>
+<script>
+document.getElementById('cLogin').addEventListener('click',()=>{
+  document.getElementById('cMsg').textContent="L'espace client sera bientôt actif — on vous préviendra dès son ouverture.";
+});
+</script>
+</body>
+</html>
