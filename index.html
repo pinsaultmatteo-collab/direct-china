@@ -157,10 +157,13 @@ header.scrolled{
 }
 .hero-inner{display:grid;grid-template-columns:1.05fr .95fr;gap:48px;align-items:center}
 .hero h1{
-  font-size:clamp(40px,5.6vw,76px);
-  font-variation-settings:'wdth' 112;
-  margin:22px 0 24px;
+  font-size:clamp(33px,4.6vw,54px);
+  font-variation-settings:'wght' 840,'wdth' 106;
+  line-height:1.08;
+  letter-spacing:-.022em;
+  margin:22px 0 26px;
 }
+.hero h1 .ln{display:block;text-wrap:balance}
 .hero h1 .hl{color:var(--yellow)}
 .hero-sub{font-size:clamp(16px,1.5vw,19px);color:var(--steel);max-width:540px;font-weight:400}
 .hero-sub strong{color:var(--white);font-weight:600}
@@ -612,7 +615,7 @@ footer{background:#070C16;border-top:1px solid var(--line);padding:64px 0 36px}
   <div class="wrap hero-inner">
     <div>
       <span class="eyebrow rv">Import industriel · Direct usine</span>
-      <h1 class="rv rv-d1">L'usine en Chine.<br>Vous en France.<br><span class="hl">Rien entre les deux.</span></h1>
+      <h1 class="rv rv-d1"><span class="ln">L'usine en Chine.</span><span class="ln">Vous en France.</span><span class="ln hl">Rien entre les deux.</span></h1>
       <p class="hero-sub rv rv-d2">Maisons capsules, levage, soudage laser, nautisme, motoculture&nbsp;: Direct China vous donne accès au <strong>prix fabricant</strong> et gère <strong>tout l'import de A à Z</strong> — production, contrôle qualité, fret maritime, douane, livraison.</p>
       <div class="hero-ctas rv rv-d3">
         <a href="catalogue.html" class="btn btn-primary">Découvrir le catalogue
