@@ -200,6 +200,8 @@ function productPage(p, cat, related, cats) {
   const prefix = '../../';
   const url = `${SITE}/produit/${p._slug}`;
   const imgs = Array.isArray(p.images) ? p.images : [];
+  const alts = Array.isArray(p.image_alts) ? p.image_alts : [];
+  const altOf = (i) => (alts[i] && String(alts[i]).trim()) ? String(alts[i]).trim() : (stripMd(p.title) + ' — photo ' + (i + 1));
   const priced = hasFixed(p);
   const priceTxt = fmtPrice(p);
   const title = `${stripMd(p.title)} — Import direct usine | Direct China`;
@@ -208,8 +210,8 @@ function productPage(p, cat, related, cats) {
   const ogImg = imgs[0] || `${SITE}/og-image.png`;
 
   const gallery = imgs.length
-    ? `<div class="pgal-main"><img id="pmain" src="${attr(imgs[0])}" alt="${attr(stripMd(p.title))} — photo 1"></div>`
-      + (imgs.length > 1 ? `<div class="pgal-thumbs">${imgs.map((u, i) => `<button class="${i === 0 ? 'on' : ''}" data-src="${attr(u)}" aria-label="Photo ${i + 1}"><img src="${attr(u)}" alt="${attr(stripMd(p.title))} — vignette ${i + 1}" loading="lazy"></button>`).join('')}</div>` : '')
+    ? `<div class="pgal-main"><img id="pmain" src="${attr(imgs[0])}" alt="${attr(altOf(0))}"></div>`
+      + (imgs.length > 1 ? `<div class="pgal-thumbs">${imgs.map((u, i) => `<button class="${i === 0 ? 'on' : ''}" data-src="${attr(u)}" aria-label="${attr(altOf(i))}"><img src="${attr(u)}" alt="${attr(altOf(i))}" loading="lazy"></button>`).join('')}</div>` : '')
     : `<div class="pgal-main">${PH_SVG}</div>`;
 
   const stock = (p.stock != null) ? (p.stock > 0
@@ -330,8 +332,10 @@ ${footer(prefix, cats)}
 /* ---------- carte produit (réutilisée catégorie + liés) ---------- */
 function cardHtml(p, prefix) {
   const imgs = Array.isArray(p.images) ? p.images : [];
+  const alts = Array.isArray(p.image_alts) ? p.image_alts : [];
+  const a0 = (alts[0] && String(alts[0]).trim()) ? String(alts[0]).trim() : stripMd(p.title);
   const media = imgs.length
-    ? `<img src="${attr(imgs[0])}" alt="${attr(stripMd(p.title))}" loading="lazy">`
+    ? `<img src="${attr(imgs[0])}" alt="${attr(a0)}" loading="lazy">`
     : PH_SVG;
   return `<a class="pcard" href="${prefix}produit/${p._slug}/">
     <div class="pcard-img">${media}</div>
@@ -427,7 +431,7 @@ function mockData() {
     { id: 'precision', name: 'Soudage laser & cryogénie', num: '03', blurb: 'Soudage laser, nettoyage cryogénique.', intro: 'Machines de précision : postes de soudage laser et stations de nettoyage cryogénique.', sort_order: 2 }
   ];
   const prods = [
-    { id: 'a1', category_id: 'levage', title: 'Gerbeur semi-électrique 1 500 kg — levée 3 m', slug: '', summary: 'Levage électrique jusqu\'à 3 m pour 1,5 T, traction manuelle, pour entrepôts à encombrement réduit', description: 'Le **gerbeur semi-électrique** soulève jusqu\'à **1 500 kg** à **3 mètres** de hauteur.\n\nIdéal pour les **entrepôts à encombrement réduit**, il combine montée électrique et traction manuelle.', price_mode: 'fixed', price: 1490, currency: 'EUR', price_label: '', stock: 9, images: ['https://example.com/gerbeur.jpg'], status: 'published', sort_order: 1 },
+    { id: 'a1', category_id: 'levage', title: 'Gerbeur semi-électrique 1 500 kg — levée 3 m', slug: '', summary: 'Levage électrique jusqu\'à 3 m pour 1,5 T, traction manuelle, pour entrepôts à encombrement réduit', description: 'Le **gerbeur semi-électrique** soulève jusqu\'à **1 500 kg** à **3 mètres** de hauteur.\n\nIdéal pour les **entrepôts à encombrement réduit**, il combine montée électrique et traction manuelle.', price_mode: 'fixed', price: 1490, currency: 'EUR', price_label: '', stock: 9, images: ['https://example.com/gerbeur1.jpg', 'https://example.com/gerbeur2.jpg'], image_alts: ['Gerbeur semi-électrique 1500 kg rouge — vue de face', ''], status: 'published', sort_order: 1 },
     { id: 'a2', category_id: 'levage', title: 'Mini-nacelle araignée 12 m', slug: '', summary: 'Nacelle compacte 12 m, passe les portes standard, stabilisateurs hydrauliques', description: 'Nacelle **araignée 12 m** ultra-compacte.', price_mode: 'quote', price: null, currency: 'EUR', price_label: 'Sur devis', stock: null, images: [], status: 'published', sort_order: 2 },
     { id: 'b1', category_id: 'precision', title: 'Station de nettoyage cryogénique', slug: '', summary: 'Décapage à la glace carbonique, sans eau ni solvant. Idéal moules, soudures, industrie.', description: 'Décapage **CO2** sans eau ni solvant.', price_mode: 'fixed', price: 8900, currency: 'EUR', price_label: '', stock: 2, images: ['https://example.com/cryo.jpg'], status: 'published', sort_order: 1 }
   ];
