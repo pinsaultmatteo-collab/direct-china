@@ -75,6 +75,16 @@ const FONTS = `<link rel="preconnect" href="https://fonts.googleapis.com"><link 
 const LOGO = `<svg class="logo-mark" viewBox="0 0 40 40" fill="none"><rect x="3" y="12" width="34" height="20" rx="2.5" stroke="#F5B301" stroke-width="2.4"/><line x1="10" y1="12" x2="10" y2="32" stroke="#F5B301" stroke-width="2"/><line x1="17" y1="12" x2="17" y2="32" stroke="#F5B301" stroke-width="2"/><line x1="24" y1="12" x2="24" y2="32" stroke="#F5B301" stroke-width="2"/><line x1="31" y1="12" x2="31" y2="32" stroke="#F5B301" stroke-width="2"/><path d="M6 8 L20 2 L34 8" stroke="#FAFBFD" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>DIRECT<em>CHINA</em></span>`;
 const MEMBER_SVG = `<svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" stroke="currentColor" stroke-width="1.7"/><path d="M4 21c0-4 3.6-7 8-7s8 3 8 7" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>`;
 const CART_SVG = `<svg viewBox="0 0 24 24" fill="none"><path d="M3 4h2l2.4 12.2a1.5 1.5 0 0 0 1.5 1.2h8.2a1.5 1.5 0 0 0 1.5-1.2L21 8H6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><circle cx="9.5" cy="20" r="1.4" fill="currentColor"/><circle cx="18" cy="20" r="1.4" fill="currentColor"/></svg>`;
+const ORG_LD = JSON.stringify({
+  "@context": "https://schema.org", "@type": "Organization",
+  "name": "Direct China", "url": SITE,
+  "logo": SITE + "/logo-512.png", "image": SITE + "/og-image.png",
+  "description": "Import de matériel industriel en direct des usines chinoises : prix fabricant, import géré de A à Z, livraison dédouanée en France.",
+  "email": "contact@direct-china.fr",
+  "areaServed": { "@type": "Country", "name": "France" },
+  "address": { "@type": "PostalAddress", "addressCountry": "FR" },
+  "contactPoint": { "@type": "ContactPoint", "email": "contact@direct-china.fr", "contactType": "sales", "areaServed": "FR", "availableLanguage": "French" }
+});
 
 function header(prefix) {
   // prefix : '../../' depuis produit/<slug>/ ou categorie/<slug>/
@@ -271,6 +281,7 @@ ${FONTS}
 <style>${PAGE_CSS}</style>
 <script type="application/ld+json">${JSON.stringify(ld)}</script>
 <script type="application/ld+json">${JSON.stringify(breadcrumb)}</script>
+<script type="application/ld+json" data-dc="org">${ORG_LD}</script>
 </head>
 <body class="dcpage">
 ${header(prefix)}
@@ -374,6 +385,7 @@ ${FONTS}
 <link rel="stylesheet" href="${prefix}styles.css">
 <style>${PAGE_CSS}</style>
 <script type="application/ld+json">${JSON.stringify(breadcrumb)}</script>
+<script type="application/ld+json" data-dc="org">${ORG_LD}</script>
 <script type="application/ld+json">${JSON.stringify(itemList)}</script>
 </head>
 <body class="dcpage">
