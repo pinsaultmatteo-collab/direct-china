@@ -147,6 +147,71 @@ body.browse .pd-related h2{color:var(--ink)}
 .pd-related .sub{font-size:14px;color:var(--steel);margin-bottom:28px}
 body.browse .pd-related .sub{color:var(--steel-d)}
 .pd-related-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:20px}
+
+/* ---- e-commerce : buy box, réassurance, avantages ---- */
+.pd-buy{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-bottom:14px}
+.qty{display:inline-flex;align-items:center;border:1px solid var(--line);border-radius:11px;overflow:hidden;flex:none}
+body.browse .qty{border-color:var(--line-light)}
+.qty button{width:44px;height:50px;font-size:20px;font-weight:700;color:inherit;transition:background .2s}
+.qty button:hover{background:rgba(245,179,1,.18)}
+.qty input{width:52px;height:50px;text-align:center;border:none;border-left:1px solid var(--line);border-right:1px solid var(--line);background:transparent;color:inherit;font-weight:700;font-size:16px;border-radius:0;-moz-appearance:textfield}
+body.browse .qty input{border-color:var(--line-light)}
+.qty input::-webkit-outer-spin-button,.qty input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+.qty input:focus{outline:none}
+.pd-buy .btn{height:50px}
+.pd-cta2{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:20px}
+.pd-secure{display:flex;align-items:flex-start;gap:10px;font-size:13px;color:var(--steel);margin-bottom:8px;line-height:1.45}
+body.browse .pd-secure{color:var(--steel-d)}
+.pd-secure svg{width:18px;height:18px;color:var(--blue);flex:none;margin-top:1px}
+.pd-secure b{font-weight:700}
+body.browse .pd-secure b{color:var(--ink)}
+
+/* bandeau avantages (pleine largeur) */
+.pd-adv{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:54px;padding-top:46px;border-top:1px solid var(--line)}
+body.browse .pd-adv{border-top-color:var(--line-light)}
+@media(max-width:680px){.pd-adv{grid-template-columns:1fr 1fr}}
+.pd-adv .adv svg{width:26px;height:26px;color:var(--yellow);margin-bottom:12px}
+body.browse .pd-adv .adv svg{color:var(--yellow-d)}
+.pd-adv .adv b{display:block;font-size:14.5px;font-weight:800;margin-bottom:5px;font-variation-settings:'wdth' 105}
+body.browse .pd-adv .adv b{color:var(--ink)}
+.pd-adv .adv p{font-size:12.5px;color:var(--steel);line-height:1.5}
+body.browse .pd-adv .adv p{color:var(--steel-d)}
+
+/* icône panier + badge dans le header */
+.cart-btn{position:relative;width:42px;height:42px;border-radius:10px;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;color:var(--white);transition:border-color .2s,background .2s;flex:none}
+.cart-btn:hover{border-color:var(--yellow);background:rgba(245,179,1,.08)}
+.cart-btn svg{width:20px;height:20px}
+.cart-badge{position:absolute;top:-7px;right:-7px;min-width:19px;height:19px;padding:0 5px;border-radius:10px;background:var(--yellow);color:var(--ink);font-size:11px;font-weight:800;display:none;align-items:center;justify-content:center}
+.cart-badge.show{display:flex}
+
+/* tiroir panier */
+.cart-ov{position:fixed;inset:0;background:rgba(7,12,22,.6);backdrop-filter:blur(3px);opacity:0;pointer-events:none;transition:opacity .3s;z-index:200}
+.cart-ov.open{opacity:1;pointer-events:auto}
+.cart-drawer{position:fixed;top:0;right:0;height:100%;width:404px;max-width:92vw;background:var(--ink-2);border-left:1px solid var(--line);z-index:201;transform:translateX(100%);transition:transform .35s var(--ease);display:flex;flex-direction:column}
+.cart-drawer.open{transform:none}
+.cart-head{display:flex;align-items:center;justify-content:space-between;padding:22px 24px;border-bottom:1px solid var(--line)}
+.cart-head h3{font-size:18px;font-weight:800}
+.cart-close{width:34px;height:34px;border-radius:8px;border:1px solid var(--line);font-size:17px;color:var(--steel);transition:background .2s}
+.cart-close:hover{background:rgba(255,255,255,.05);color:var(--white)}
+.cart-items{flex:1;overflow-y:auto;padding:8px 24px}
+.cart-empty{text-align:center;color:var(--steel);padding:60px 20px;font-size:14px}
+.cart-item{display:grid;grid-template-columns:60px 1fr auto;gap:14px;padding:16px 0;border-bottom:1px solid var(--line)}
+.ci-img{width:60px;height:60px;border-radius:8px;border:1px solid var(--line);background:#fff;overflow:hidden;display:flex;align-items:center;justify-content:center}
+.ci-img img{width:100%;height:100%;object-fit:contain;padding:5px}
+.ci-name{font-size:13.5px;font-weight:700;margin-bottom:3px;line-height:1.25}
+.ci-price{font-size:12px;color:var(--yellow)}
+.ci-qty{display:inline-flex;align-items:center;border:1px solid var(--line);border-radius:8px;margin-top:9px}
+.ci-qty button{width:26px;height:26px;font-size:15px;color:var(--steel)}
+.ci-qty button:hover{color:var(--yellow)}
+.ci-qty span{min-width:28px;text-align:center;font-size:13px;font-weight:700}
+.ci-remove{font-size:11px;color:var(--steel-d);text-decoration:underline;margin-top:9px;display:inline-block;cursor:pointer}
+.ci-remove:hover{color:#E8867B}
+.ci-line{font-size:13.5px;font-weight:800;white-space:nowrap}
+.cart-foot{border-top:1px solid var(--line);padding:20px 24px;display:flex;flex-direction:column;gap:13px}
+.cart-sub{display:flex;justify-content:space-between;align-items:baseline;font-size:14px;color:var(--steel)}
+.cart-sub b{font-size:23px;font-weight:900;color:var(--white);font-variation-settings:'wdth' 110}
+.cart-note{font-size:11.5px;color:var(--steel-d);text-align:center;line-height:1.5}
+@media(max-width:480px){.cart-drawer{width:100%}}
 </style>
 </head>
 <body>
@@ -165,6 +230,7 @@ body.browse .pd-related .sub{color:var(--steel-d)}
       <a href="faq.html">FAQ</a>
     </nav>
     <a href="mailto:contact@direct-china.fr" class="nav-cta">Demander un devis</a>
+    <button class="cart-btn" id="cartBtn" aria-label="Voir le panier"><svg viewBox="0 0 24 24" fill="none"><path d="M3 4h2l2.4 12.2a1.5 1.5 0 0 0 1.5 1.2h8.2a1.5 1.5 0 0 0 1.5-1.2L21 8H6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><circle cx="9.5" cy="20" r="1.4" fill="currentColor"/><circle cx="18" cy="20" r="1.4" fill="currentColor"/></svg><span class="cart-badge" id="cartBadge">0</span></button>
     <button class="burger" id="burger" aria-label="Ouvrir le menu" aria-expanded="false"><span></span><span></span><span></span></button>
   </div>
 </header>
@@ -248,6 +314,14 @@ body.browse .pd-related .sub{color:var(--steel-d)}
   </div>
 </footer>
 
+<!-- PANIER -->
+<div class="cart-ov" id="cartOv"></div>
+<aside class="cart-drawer" id="cartDrawer" aria-label="Panier">
+  <div class="cart-head"><h3>Votre panier</h3><button class="cart-close" id="cartClose" aria-label="Fermer">✕</button></div>
+  <div class="cart-items" id="cartItems"></div>
+  <div class="cart-foot" id="cartFoot"></div>
+</aside>
+
 <script src="shared.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase-config.js"></script>
@@ -316,10 +390,14 @@ const detail = document.getElementById('detailView');
 
 const CUR = {EUR:'€',USD:'$',GBP:'£',CNY:'¥'};
 function fmtPrice(p){
-  if(p.priceLabel) return p.priceLabel;
-  if(p.priceMode==='fixed' && p.price!=null){
-    const s=CUR[p.currency]||'€', n=Number(p.price).toLocaleString('fr-FR');
-    return (p.currency==='USD'||p.currency==='GBP') ? s+n : n+' '+s;
+  const lbl = (p.priceLabel||'').trim();
+  if(lbl && !/^[€$£¥\s]+$/.test(lbl)) return lbl;
+  if(p.priceMode==='fixed' && p.price!=null && p.price!==''){
+    const num = Number(p.price);
+    if(isFinite(num)){
+      const s=CUR[p.currency]||'€', n=num.toLocaleString('fr-FR');
+      return (p.currency==='USD'||p.currency==='GBP') ? s+n : n+' '+s;
+    }
   }
   return 'Sur devis';
 }
@@ -407,6 +485,34 @@ function showProduct(id){
   const st = stockInfo(p);
   const stockHtml = st ? `<span class="pd-stock ${st.cls}">${st.txt}</span>` : '';
   const subject = encodeURIComponent('Devis — '+p.n);
+  const priced = hasPrice(p);
+  const buyBox = priced ? `
+        <div class="pd-buy">
+          <div class="qty">
+            <button type="button" id="qMinus" aria-label="Diminuer">−</button>
+            <input id="qInput" type="number" min="1" value="1" inputmode="numeric">
+            <button type="button" id="qPlus" aria-label="Augmenter">+</button>
+          </div>
+          <button class="btn btn-primary" id="addCart" style="flex:1;min-width:170px;justify-content:center">Ajouter au panier</button>
+        </div>
+        <div class="pd-cta2">
+          <a class="btn btn-ghost" href="mailto:contact@direct-china.fr?subject=${subject}">Demander un devis</a>
+          <a class="btn btn-ghost" href="#${c.id}">Voir la catégorie</a>
+        </div>` : `
+        <div class="pd-cta2">
+          <a class="btn btn-primary" href="mailto:contact@direct-china.fr?subject=${subject}">Demander un devis
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 8h11M9 3.5L13.5 8 9 12.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+          <a class="btn btn-ghost" href="#${c.id}">Voir la catégorie</a>
+        </div>`;
+  const secure = `<div class="pd-secure"><svg viewBox="0 0 24 24" fill="none"><path d="M12 2l8 4v6c0 5-3.5 8-8 10-4.5-2-8-5-8-10V6l8-4z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M9 12l2 2 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span><b>Paiement sécurisé.</b> Acompte 50 % à la commande, solde avant livraison · données chiffrées.</span></div>`;
+  const advantages = `
+    <div class="pd-adv">
+      <div class="adv"><svg viewBox="0 0 24 24" fill="none"><path d="M3 12l9-9 9 9-9 9-9-9z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M9 12l2 2 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><b>Prix direct usine</b><p>Jusqu'à −40 % vs le circuit France classique.</p></div>
+      <div class="adv"><svg viewBox="0 0 24 24" fill="none"><path d="M3 7l9-4 9 4-9 4-9-4z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M3 7v10l9 4 9-4V7" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M12 11v10" stroke="currentColor" stroke-width="1.6"/></svg><b>Import géré de A à Z</b><p>Production, fret maritime, douane et livraison.</p></div>
+      <div class="adv"><svg viewBox="0 0 24 24" fill="none"><path d="M12 2l8 4v6c0 5-3.5 8-8 10-4.5-2-8-5-8-10V6l8-4z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M9 12l2 2 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><b>Contrôle qualité</b><p>Inspection en usine, validée par vos soins avant expédition.</p></div>
+      <div class="adv"><svg viewBox="0 0 24 24" fill="none"><path d="M2 17h13l3-5h-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 17V7h9v10" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><circle cx="7" cy="20" r="1.7" stroke="currentColor" stroke-width="1.6"/><circle cx="16" cy="20" r="1.7" stroke="currentColor" stroke-width="1.6"/></svg><b>Livré dédouané</b><p>DDP, partout en France. Aucune surprise à l'arrivée.</p></div>
+    </div>`;
 
   // produits de la même catégorie
   const others = (c.products||[]).filter(x=>x.id!==p.id).slice(0,4);
@@ -450,12 +556,8 @@ function showProduct(id){
           ${stockHtml}
         </div>
         <div class="pd-desc">${descHtml(p.desc)}</div>
-        <div class="pd-cta">
-          <a class="btn btn-primary" href="mailto:contact@direct-china.fr?subject=${subject}">Demander un devis
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 8h11M9 3.5L13.5 8 9 12.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </a>
-          <a class="btn btn-ghost" href="#${c.id}">Voir la catégorie</a>
-        </div>
+        ${buyBox}
+        ${secure}
         <div class="pd-meta">
           <div>Catégorie<b>${c.title}</b></div>
           <div>Import<b>Direct usine · DDP France</b></div>
@@ -463,6 +565,7 @@ function showProduct(id){
         </div>
       </div>
     </div>
+    ${advantages}
     ${related}`;
 
   // galerie : flèches + vignettes
@@ -478,6 +581,19 @@ function showProduct(id){
   if(prev) prev.addEventListener('click',()=>setImg(gi-1));
   if(next) next.addEventListener('click',()=>setImg(gi+1));
   document.querySelectorAll('#detailBody .pd-thumb').forEach(t=>t.addEventListener('click',()=>setImg(parseInt(t.dataset.i,10))));
+
+  // achat : quantité + ajout au panier
+  if(priced){
+    const qIn=document.getElementById('qInput');
+    const readQ=()=>Math.max(1,parseInt(qIn.value,10)||1);
+    document.getElementById('qMinus').addEventListener('click',()=>{ qIn.value=Math.max(1,readQ()-1); });
+    document.getElementById('qPlus').addEventListener('click',()=>{ qIn.value=readQ()+1; });
+    qIn.addEventListener('change',()=>{ qIn.value=readQ(); });
+    document.getElementById('addCart').addEventListener('click',()=>{
+      cartAdd({id:p.id, n:p.n, price:Number(p.price), currency:p.currency||'EUR', image:(p.images&&p.images[0])||''}, readQ());
+      openCart();
+    });
+  }
 
   crumb.innerHTML = `<a href="/catalogue" style="color:var(--steel-d)">Catalogue</a> <span style="margin:0 6px">/</span> <a href="#${c.id}" style="color:var(--steel-d)">${c.title}</a> <span style="margin:0 6px">/</span> ${esc(p.n)}`;
   setView('product');
@@ -539,6 +655,58 @@ async function initCatalogue(){
   renderIndex();
   routeFromHash();
 }
+/* ============ PANIER (localStorage) ============ */
+function hasPrice(p){ return p.priceMode==='fixed' && p.price!=null && p.price!=='' && isFinite(Number(p.price)); }
+const CART_KEY='dc_cart';
+function loadCart(){ try{return JSON.parse(localStorage.getItem(CART_KEY))||[];}catch(_){return[];} }
+function saveCart(c){ try{localStorage.setItem(CART_KEY,JSON.stringify(c));}catch(_){ } renderCart(); }
+function money(n,cur){ const s=CUR[cur]||'€', v=Number(n).toLocaleString('fr-FR'); return (cur==='USD'||cur==='GBP')?s+v:v+' '+s; }
+function cartAdd(item,qty){ const c=loadCart(); const ex=c.find(x=>x.id===item.id); if(ex) ex.qty+=qty; else c.push({...item,qty}); saveCart(c); }
+function cartSetQty(id,qty){ let c=loadCart(); const it=c.find(x=>x.id===id); if(!it)return; it.qty=qty; if(it.qty<=0) c=c.filter(x=>x.id!==id); saveCart(c); }
+function cartRemove(id){ saveCart(loadCart().filter(x=>x.id!==id)); }
+function renderCart(){
+  const c=loadCart(), n=c.reduce((s,i)=>s+i.qty,0);
+  const badge=document.getElementById('cartBadge'); if(badge){ badge.textContent=n; badge.classList.toggle('show',n>0); }
+  const items=document.getElementById('cartItems'), foot=document.getElementById('cartFoot');
+  if(!items||!foot) return;
+  if(!c.length){ items.innerHTML='<div class="cart-empty">Votre panier est vide.</div>'; foot.innerHTML=''; return; }
+  items.innerHTML=c.map(i=>`
+    <div class="cart-item" data-id="${i.id}">
+      <div class="ci-img">${i.image?`<img src="${i.image}" alt="">`:''}</div>
+      <div>
+        <div class="ci-name">${esc(i.n)}</div>
+        <div class="ci-price">${money(i.price,i.currency)} / u.</div>
+        <div class="ci-qty"><button type="button" data-act="dec" aria-label="Moins">−</button><span>${i.qty}</span><button type="button" data-act="inc" aria-label="Plus">+</button></div>
+        <span class="ci-remove" data-act="rm">Retirer</span>
+      </div>
+      <div class="ci-line">${money(i.price*i.qty,i.currency)}</div>
+    </div>`).join('');
+  const cur=c[0].currency, sub=c.reduce((s,i)=>s+i.price*i.qty,0);
+  const lines=c.map(i=>`- ${i.qty} x ${i.n} (${money(i.price,i.currency)})`).join('%0D%0A');
+  const body=`Bonjour,%0D%0A%0D%0AJe souhaite un devis pour ce panier :%0D%0A${lines}%0D%0A%0D%0ASous-total indicatif : ${money(sub,cur)}%0D%0A%0D%0AMerci.`;
+  foot.innerHTML=`
+    <div class="cart-sub"><span>Sous-total</span><b>${money(sub,cur)}</b></div>
+    <a class="btn btn-primary" style="justify-content:center" href="mailto:contact@direct-china.fr?subject=Devis%20panier&body=${body}">Demander un devis pour ce panier</a>
+    <div class="cart-note">Paiement sécurisé · Acompte 50 % à la commande, solde avant livraison · Livré dédouané en France.</div>`;
+}
+(function(){
+  const ov=document.getElementById('cartOv'), dr=document.getElementById('cartDrawer');
+  window.openCart=()=>{ ov.classList.add('open'); dr.classList.add('open'); document.body.style.overflow='hidden'; };
+  window.closeCart=()=>{ ov.classList.remove('open'); dr.classList.remove('open'); document.body.style.overflow=''; };
+  document.getElementById('cartBtn').addEventListener('click', window.openCart);
+  document.getElementById('cartClose').addEventListener('click', window.closeCart);
+  ov.addEventListener('click', window.closeCart);
+  document.getElementById('cartItems').addEventListener('click', e=>{
+    const it=e.target.closest('.cart-item'); if(!it) return; const id=it.dataset.id;
+    const act=e.target.dataset.act; if(!act) return;
+    const cur=loadCart().find(x=>x.id===id), q=cur?cur.qty:0;
+    if(act==='inc') cartSetQty(id,q+1);
+    else if(act==='dec') cartSetQty(id,q-1);
+    else if(act==='rm') cartRemove(id);
+  });
+  renderCart();
+})();
+
 initCatalogue();
 </script>
 </body>
