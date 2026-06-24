@@ -460,12 +460,18 @@ async function callApi(path, payload){
   let r;
   try{
     r = await fetch(path, {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload)});
-  }catch(_){ throw new Error('offline'); }
+  }catch(_){ throw new Error('Réseau indisponible — réessaie.'); }
   const ct = r.headers.get('content-type')||'';
-  if(!ct.includes('application/json')) throw new Error('offline'); // réponse HTML = fonction non déployée (test local)
-  const j = await r.json();
-  if(!r.ok) throw new Error(j.error || ('Erreur '+r.status));
-  return j;
+  if(ct.includes('application/json')){
+    const j = await r.json();
+    if(!r.ok) throw new Error(j.error || ('Erreur '+r.status));
+    return j;
+  }
+  // réponse non-JSON (HTML) = fonction non déployée OU plantage serverless
+  if(r.status===404) throw new Error("Fonction /api introuvable (404) : le dossier api/ n'est pas déployé sur Vercel.");
+  if(r.status===405) throw new Error('Méthode refusée (405) sur '+path+'.');
+  if(r.status>=500) throw new Error('La fonction a échoué ('+r.status+') : clé API manquante/invalide ou délai dépassé. Vérifie les logs Vercel.');
+  throw new Error('Réponse inattendue ('+r.status+') de '+path+' — fonction probablement non déployée.');
 }
 $('#importBtn').addEventListener('click', async ()=>{
   const url = $('#f_supplier').value.trim();
@@ -483,7 +489,7 @@ $('#importBtn').addEventListener('click', async ()=>{
     toast('Fiche pré-remplie','ok');
   }catch(e){
     $('#aiHint').textContent='';
-    toast(e.message==='offline' ? 'L\'import sera dispo une fois le site déployé sur Vercel.' : e.message, 'bad');
+    toast(e.message, 'bad');
   }
   btn.innerHTML=old; btn.disabled=false;
 });
@@ -503,7 +509,7 @@ $('#rewriteBtn').addEventListener('click', async ()=>{
     toast('Texte réécrit','ok');
   }catch(e){
     $('#aiHint').textContent='';
-    toast(e.message==='offline' ? 'La réécriture sera dispo une fois déployée sur Vercel (+ clé API).' : e.message, 'bad');
+    toast(e.message, 'bad');
   }
   btn.innerHTML=old; btn.disabled=false;
 });
