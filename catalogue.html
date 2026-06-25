@@ -226,21 +226,32 @@ body.browse .pd-adv .adv p{color:var(--steel-d)}
 @media(max-width:480px){.cart-drawer{width:100%}}
 
 /* ---- boutique catalogue ---- */
-.shop-bar{display:flex;gap:14px;flex-wrap:wrap;align-items:center;margin-bottom:18px}
-.shop-search{flex:1;min-width:240px;display:flex;align-items:center;gap:10px;background:var(--white);border:1px solid var(--line-light);border-radius:12px;padding:0 14px}
+.shop-layout{display:grid;grid-template-columns:236px 1fr;gap:34px;align-items:start}
+.shop-side{position:sticky;top:84px;display:flex;flex-direction:column;gap:14px}
+.shop-search{display:flex;align-items:center;gap:10px;background:var(--white);border:1px solid var(--line-light);border-radius:12px;padding:0 14px}
 .shop-search svg{width:18px;height:18px;color:var(--steel-d);flex:none}
-.shop-search input{flex:1;border:none;background:none;padding:14px 0;font-family:var(--font-d);font-size:15px;color:var(--ink);min-width:0}
+.shop-search input{flex:1;border:none;background:none;padding:13px 0;font-family:var(--font-d);font-size:14.5px;color:var(--ink);min-width:0}
 .shop-search input:focus{outline:none}
-.shop-sort{background:var(--white);border:1px solid var(--line-light);border-radius:12px;padding:14px;font-family:var(--font-d);font-size:14px;color:var(--ink);cursor:pointer}
-.shop-sort:focus{outline:none;border-color:var(--yellow-d)}
-.shop-chips{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:18px}
-.chip{font-family:var(--font-m);font-size:12px;letter-spacing:.03em;padding:9px 15px;border-radius:999px;border:1px solid var(--line-light);background:var(--white);color:var(--steel-d);cursor:pointer;transition:background .2s,color .2s,border-color .2s}
+.shop-side-head{font-family:var(--font-m);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--steel-d);margin-top:4px}
+.shop-chips{display:flex;flex-direction:column;gap:7px}
+.chip{text-align:left;font-family:var(--font-d);font-size:14px;padding:10px 14px;border-radius:10px;border:1px solid var(--line-light);background:var(--white);color:var(--steel-d);cursor:pointer;transition:background .2s,color .2s,border-color .2s}
 .chip:hover{border-color:var(--yellow-d);color:var(--ink)}
 .chip.on{background:var(--ink);color:var(--white);border-color:var(--ink)}
-.shop-meta{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:22px;flex-wrap:wrap}
-#shopCount{font-family:var(--font-m);font-size:12.5px;color:var(--steel-d);letter-spacing:.03em}
-.shop-cat-link{font-family:var(--font-m);font-size:12.5px;color:var(--yellow-d);font-weight:600}
+.shop-cat-link{font-family:var(--font-m);font-size:12px;color:var(--yellow-d);font-weight:600;margin-top:2px}
 .shop-cat-link:hover{text-decoration:underline}
+.shop-main{min-width:0}
+.shop-topbar{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:20px;flex-wrap:wrap}
+#shopCount{font-family:var(--font-m);font-size:12.5px;color:var(--steel-d);letter-spacing:.03em}
+.shop-sort{background:var(--white);border:1px solid var(--line-light);border-radius:10px;padding:11px 13px;font-family:var(--font-d);font-size:13.5px;color:var(--ink);cursor:pointer}
+.shop-sort:focus{outline:none;border-color:var(--yellow-d)}
+.prod{cursor:pointer}
+@media(max-width:860px){
+  .shop-layout{grid-template-columns:1fr;gap:18px}
+  .shop-side{position:static;top:auto}
+  .shop-side-head{display:none}
+  .shop-chips{flex-direction:row;flex-wrap:nowrap;overflow-x:auto;gap:8px;padding-bottom:4px;-webkit-overflow-scrolling:touch}
+  .shop-chips .chip{white-space:nowrap;flex:none;border-radius:999px;font-size:13px;padding:8px 14px}
+}
 .prod-cat-tag{display:inline-block;font-family:var(--font-m);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--steel-d);margin-bottom:8px}
 .shop-empty{text-align:center;padding:54px 20px;color:var(--steel-d)}
 .shop-empty p{margin-bottom:16px;font-size:15px}
@@ -289,24 +300,32 @@ body.browse .pd-adv .adv p{color:var(--steel-d)}
 
 <section class="section">
   <div class="wrap">
-    <div class="shop-bar">
-      <div class="shop-search">
-        <svg viewBox="0 0 20 20" fill="none"><circle cx="9" cy="9" r="6" stroke="currentColor" stroke-width="1.7"/><path d="M13.5 13.5l4 4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
-        <input id="shopSearch" type="search" placeholder="Rechercher : nacelle, spa, soudage laser…" aria-label="Rechercher un produit">
+    <div class="shop-layout">
+      <aside class="shop-side">
+        <div class="shop-search">
+          <svg viewBox="0 0 20 20" fill="none"><circle cx="9" cy="9" r="6" stroke="currentColor" stroke-width="1.7"/><path d="M13.5 13.5l4 4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+          <input id="shopSearch" type="search" placeholder="Rechercher un produit…" aria-label="Rechercher un produit">
+        </div>
+        <div class="shop-side-head">Catégories</div>
+        <div class="shop-chips" id="shopChips"></div>
+        <a class="shop-cat-link" id="shopCatLink" hidden></a>
+      </aside>
+      <div class="shop-main">
+        <div class="shop-topbar">
+          <span id="shopCount"></span>
+          <select id="shopSort" class="shop-sort" aria-label="Trier les produits">
+            <option value="default">Trier : pertinence</option>
+            <option value="price-asc">Prix croissant</option>
+            <option value="price-desc">Prix décroissant</option>
+            <option value="name">Nom A → Z</option>
+          </select>
+        </div>
+        <div class="prod-grid" id="shopGrid"></div>
+        <div class="shop-empty" id="shopEmpty" hidden>
+          <p>Aucun produit ne correspond à votre recherche.</p>
+          <button class="btn btn-ghost" id="shopReset">Réinitialiser les filtres</button>
+        </div>
       </div>
-      <select id="shopSort" class="shop-sort" aria-label="Trier les produits">
-        <option value="default">Trier : pertinence</option>
-        <option value="price-asc">Prix croissant</option>
-        <option value="price-desc">Prix décroissant</option>
-        <option value="name">Nom A → Z</option>
-      </select>
-    </div>
-    <div class="shop-chips" id="shopChips"></div>
-    <div class="shop-meta"><span id="shopCount"></span><a class="shop-cat-link" id="shopCatLink" hidden></a></div>
-    <div class="prod-grid" id="shopGrid"></div>
-    <div class="shop-empty" id="shopEmpty" hidden>
-      <p>Aucun produit ne correspond à votre recherche.</p>
-      <button class="btn btn-ghost" id="shopReset">Réinitialiser les filtres</button>
     </div>
     <div class="pv-foot">
       <p><strong>Vous ne trouvez pas exactement ce qu'il vous faut ?</strong> On source n'importe quel équipement industriel à la demande : identification de l'usine, négociation, audit et import complet.</p>
@@ -462,6 +481,12 @@ document.addEventListener('click', e=>{
   const im=box.querySelector('img'); if(im) im.src=imgs[idx];
   box.querySelectorAll('.pa-dots i').forEach((d,k)=>d.classList.toggle('on',k===idx));
 });
+/* carte produit entierement cliquable (hors fleches / liens / boutons) */
+document.addEventListener('click', e=>{
+  const card=e.target.closest('.prod[data-href]'); if(!card) return;
+  if(e.target.closest('.pa, a, button')) return;
+  window.location.href=card.dataset.href;
+});
 function findProduct(id){
   for(const c of CATS){ const p=(c.products||[]).find(x=>x.id===id); if(p) return {p,c}; }
   return null;
@@ -494,7 +519,7 @@ function applyShop(){
   });
   const grid=document.getElementById('shopGrid'), empty=document.getElementById('shopEmpty');
   grid.innerHTML = list.map(p=>`
-    <article class="prod">
+    <article class="prod" data-href="/produit/${p.slug}">
       ${cardMedia(p, p.catIcon)}
       <div class="prod-body">
         <span class="prod-cat-tag">${p.catName}</span>
